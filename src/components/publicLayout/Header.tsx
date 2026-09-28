@@ -1,6 +1,13 @@
-import { Menu } from 'lucide-react';
+'use client';
+
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import Logo from '../logo/Logo';
+import { Button } from '../ui/button';
+import { toast } from '../ui/toast';
+import { useGetMe, useLogout } from '@/hooks';
+import { UserRole } from '@/types';
+import { LogOut } from 'lucide-react';
 
 const navItems = [
     { label: 'Home', href: '/' },
@@ -8,61 +15,89 @@ const navItems = [
     { label: 'Plans', href: '#plans' },
     { label: 'About', href: '/about-us' },
     { label: 'Contact', href: '/contact-us' },
+    { label: 'ApplyAsTechnician', href: '/applyAsTechnician' },
 ];
 
+const dashboardRoute: Record<UserRole, string> = {
+    ADMIN: '/admin',
+    OPERATOR: '/admin',
+    TECHNICIAN: '/technician',
+    CUSTOMER: '/dashboard',
+};
+
 export default function Header() {
+    const { data, isLoading } = useGetMe();
+    const { mutate: logout } = useLogout();
+    const queryClient = useQueryClient();
+
+    const role: UserRole = !!data?.data && data?.data.role;
+
+    const handleLogout = () => {
+        logout(undefined, {
+            onSuccess: () => {
+                toast.add({
+                    title: 'Tata',
+                    description: 'Logged out successfully',
+                    type: 'success',
+                });
+
+                queryClient.removeQueries({ queryKey: ['user'] });
+            },
+
+            onError: () => {
+                toast.add({
+                    title: 'Logout failed',
+                    description: 'Something Went Wrong',
+                    type: 'error',
+                });
+            },
+        });
+    };
+
     return (
-        <header className="w-full bg-white">
-            {/* ==================== NAVBAR ==================== */}
-            <nav className="border-b border-slate-100 bg-white/90 backdrop-blur-xl">
-                <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
+        <header className="w-full h-20 border-b">
+            <div className="flex justify-between items-center h-full max-w-7xl mx-auto">
+                <div>
                     {/* Logo */}
                     <Logo />
+                </div>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden items-center gap-8 md:flex">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.label}
-                                href={item.href}
-                                className={`text-sm font-medium transition ${
-                                    item.label === 'Home'
-                                        ? 'text-slate-900'
-                                        : 'text-slate-500 hover:text-[#ff8a00]'
-                                }`}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
-                    </div>
+                {/* Desktop Navigation */}
+                <nav className="flex gap-5 ">
+                    {navItems.map((item) => (
+                        <Link key={item.label} href={item.href}>
+                            {item.label}
+                        </Link>
+                    ))}
 
-                    {/* Desktop Actions */}
-                    <div className="hidden items-center gap-3 md:flex">
+                    {role && (
                         <Link
-                            href="/login"
-                            className="rounded-full px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-50 hover:text-[#ff8a00] bg-blue-500"
+                            href={dashboardRoute[role]}
+                            className="hover:text-[#ff8a00]"
+                        >
+                            Dashboard
+                        </Link>
+                    )}
+                </nav>
+
+                <div>
+                    {!isLoading && !data && (
+                        <Button
+                            render={<Link href="/login">Login</Link>}
+                            nativeButton={false}
+                            className="px-6"
                         >
                             Login
-                        </Link>
-
-                        <Link
-                            href="/register"
-                            className="rounded-full bg-[#ff8a00] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition hover:bg-[#e67a00] hover:shadow-orange-500/30"
-                        >
-                            Get Started
-                        </Link>
-                    </div>
-
-                    {/* Mobile Menu */}
-                    <button
-                        type="button"
-                        aria-label="Open menu"
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-700 transition hover:border-orange-200 hover:bg-orange-50 hover:text-[#ff8a00] md:hidden"
-                    >
-                        <Menu className="h-5 w-5" />
-                    </button>
+                        </Button>
+                    )}
+                    {!isLoading && data && (
+                        <Button onClick={handleLogout} className="px-5">
+                            <LogOut className="text-[#0055B8]" />
+                            Logout
+                        </Button>
+                    )}
                 </div>
-            </nav>
+            </div>
         </header>
     );
 }

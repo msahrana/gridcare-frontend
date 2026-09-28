@@ -15,7 +15,7 @@ export default function Logo({ showText = true, className = '' }: LogoProps) {
         >
             {/* Logo Icon */}
             <Image
-                src="/icon.png"
+                src="/image.png"
                 width={400}
                 height={400}
                 alt="GridCare"
@@ -26,11 +26,11 @@ export default function Logo({ showText = true, className = '' }: LogoProps) {
             {/* Logo Text */}
             {showText && (
                 <div className="leading-none">
-                    <p className="text-5xl font-extrabold tracking-tight text-slate-900">
+                    <p className="text-5xl font-extrabold tracking-tight text-[#0055B8]">
                         Grid<span className="text-[#ff8a00]">Care</span>
                     </p>
 
-                    <p className="mt-1 text-[8px] font-medium tracking-wide text-blue-500 ">
+                    <p className="mt-1 text-[8px] font-medium tracking-wide text-[#0055B8] ">
                         <span className="text-[#ff8a00]">-</span> SMART POWER
                         OUTAGE MANAGEMENT SYSTEM{' '}
                         <span className="text-[#ff8a00]">-</span>

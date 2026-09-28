@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils';
 import Header from '@/components/publicLayout/Header';
 import type { Metadata } from 'next';
 import Footer from '@/components/publicLayout/Footer';
+import Providers from '@/providers';
+import { Toaster } from '@/components/ui/toast';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -35,13 +37,16 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
                 inter.variable,
             )}
         >
-            <body className="flex min-h-screen flex-col">
-                <Header />
-
-                <main className="flex-1">{children}</main>
-
-                <Footer />
-            </body>
+            <Providers>
+                <body className="flex min-h-screen flex-col">
+                    <Header />
+                    <main className="flex-1">
+                        {children}
+                        <Toaster />
+                    </main>
+                    <Footer />
+                </body>
+            </Providers>
         </html>
     );
 }

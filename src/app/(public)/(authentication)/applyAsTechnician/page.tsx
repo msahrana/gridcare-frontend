@@ -20,9 +20,9 @@ const ApplyAsTechnician = () => {
                 <Image
                     src="/register.png"
                     width={800}
-                    height={800}
+                    height={700}
                     alt="SR Healthcare"
-                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                    className="absolute inset-0 object-cover dark:brightness-[0.2] dark:grayscale"
                 />
             </div>
         </div>

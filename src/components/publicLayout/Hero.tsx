@@ -42,7 +42,7 @@ const Hero = () => {
                     <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-sky-100 bg-white px-4 py-2 shadow-sm">
                         <span className="flex h-2 w-2 rounded-full bg-[#ff8a00]" />
 
-                        <span className="text-xs font-semibold uppercase tracking-wider text-sky-600">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-[#0055B8]">
                             Smart Energy Management
                         </span>
                     </div>
@@ -50,7 +50,7 @@ const Hero = () => {
                     {/* Heading */}
                     <h1 className="text-5xl font-bold leading-[1.08] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
                         Powering a
-                        <span className="block text-sky-500">
+                        <span className="block text-[#0055B8]">
                             Smarter{' '}
                             <span className="text-[#ff8a00]">Future.</span>
                         </span>
@@ -129,7 +129,7 @@ const Hero = () => {
                     {/* Dashboard Card */}
                     <div className="relative overflow-hidden rounded-[2rem] border border-white/80 bg-white/80 p-4 shadow-2xl shadow-sky-900/10 backdrop-blur-xl">
                         {/* Dashboard */}
-                        <div className="relative overflow-hidden rounded-[1.5rem] bg-linear-to-br from-sky-500 to-blue-700 p-8">
+                        <div className="relative overflow-hidden rounded-[1.5rem] bg-linear-to-br from-sky-500 to-[#0055B8] p-8">
                             {/* Grid Background */}
                             <div
                                 className="absolute inset-0 opacity-10"

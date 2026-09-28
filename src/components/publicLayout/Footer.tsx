@@ -103,7 +103,7 @@ export default function Footer() {
                         >
                             {/* GridCare Icon */}
                             <Image
-                                src="/icon.png"
+                                src="/image.png"
                                 width={44}
                                 height={44}
                                 alt="GridCare"
@@ -112,7 +112,7 @@ export default function Footer() {
                             />
 
                             {/* GridCare Name */}
-                            <span className="text-xl font-bold tracking-tight text-white">
+                            <span className="text-xl font-bold tracking-tight text-[#0055B8]">
                                 Grid
                                 <span className="text-[#ff8a00]">Care</span>
                             </span>

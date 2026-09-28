@@ -1,9 +1,5 @@
 const PublicLayout = ({ children }: LayoutProps<'/'>) => {
-    return (
-        <div className="min-h-screen bg-white">
-            <main>{children}</main>
-        </div>
-    );
+    return <div>{children}</div>;
 };
 
 export default PublicLayout;
