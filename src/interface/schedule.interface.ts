@@ -8,7 +8,7 @@ export interface Schedule {
     availableSlots: number;
     meetingLink: string;
     status: ScheduleStatus;
-    doctorId: string;
+    technicianId: string;
     createdAt: string;
     updatedAt: string;
 }

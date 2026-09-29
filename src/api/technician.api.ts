@@ -34,7 +34,7 @@ export function verifyTechnicianAccount(payload: ICredentialVerifyOTP) {
 
 export function getAllTechnicians(params: TechnicianParams) {
     return apiClient<ApiResponse<Technician[]>>(
-        '/technicians/all-technicians',
+        '/technicians/all-technician',
         {
             params,
         },

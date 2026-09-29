@@ -32,7 +32,7 @@ export interface Payment {
     updatedAt: string;
 }
 
-export interface AppointmentDoctor {
+export interface AppointmentTechnician {
     id: string;
     name: string;
     specialization: string;
@@ -56,12 +56,12 @@ export interface Appointment {
     recordUrl?: string | null;
     prescriptionUrl?: string | null;
     patientId: string;
-    doctorId: string;
+    technicianId: string;
     scheduleId: string;
     createdAt: string;
     updatedAt: string;
     patient?: AppointmentPatient;
-    doctor?: AppointmentDoctor;
+    technician?: AppointmentTechnician;
     schedule?: Schedule;
     payment?: Payment | null;
 }
