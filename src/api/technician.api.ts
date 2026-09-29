@@ -19,27 +19,30 @@ export function applyAsTechnician(payload: TechnicianApplicationPayload) {
         formData.append('additionalFiles', file);
     }
 
-    return apiClient('/technician/apply-as-technician', {
+    return apiClient('/technicians/apply-as-technician', {
         method: 'POST',
         body: formData,
     });
 }
 
 export function verifyTechnicianAccount(payload: ICredentialVerifyOTP) {
-    return apiClient('/technician/apply-as-technician/verify-email', {
+    return apiClient('/technicians/apply-as-technician/verify-email', {
         method: 'POST',
         body: payload,
     });
 }
 
 export function getAllTechnicians(params: TechnicianParams) {
-    return apiClient<ApiResponse<Technician[]>>('/technician/all-technicians', {
-        params,
-    });
+    return apiClient<ApiResponse<Technician[]>>(
+        '/technicians/all-technicians',
+        {
+            params,
+        },
+    );
 }
 
 export function approveTechnician(payload: ApproveTechnicianPayload) {
-    return apiClient('/technician/approve-technician', {
+    return apiClient('/technicians/approve-technician', {
         method: 'POST',
         body: payload,
     });
@@ -47,7 +50,7 @@ export function approveTechnician(payload: ApproveTechnicianPayload) {
 
 export function getAllPublicTechnicians(params: PublicTechnicianParams) {
     return apiClient<ApiResponse<PublicTechnicianProfile[]>>(
-        '/technician/public/all-technicians',
+        '/technicians/public/all-technicians',
         {
             params,
         },

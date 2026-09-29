@@ -2,17 +2,13 @@
 
 import { useForm } from '@tanstack/react-form';
 import {
-    BadgeCheck,
-    Banknote,
     BriefcaseMedical,
     FileText,
     FileUp,
-    GraduationCap,
     Mail,
     MapPin,
     Phone,
     Plus,
-    Stethoscope,
     User,
     X,
 } from 'lucide-react';
@@ -39,70 +35,70 @@ import {
     MAX_FILE_SIZE,
 } from '@/validation';
 import { toast } from '../ui/toast';
-import { useApplyAsTechnician } from '@/hooks/technician.hook';
 import { TechnicianApplicationData } from '@/interface';
-import { formatFileSize } from '@/utils/file-size.util';
+import { formatFileSize } from '@/utils';
+import z from 'zod';
+import { useApplyAsTechnician } from '@/hooks';
+import { Spinner } from '../ui/spinner';
 
 const TechnicianApplyForm = () => {
-    //  const [showPassword, setShowPassword] = useState(false);
-
     const router = useRouter();
-    const { mutate: apply } = useApplyAsTechnician();
+    const { mutate: apply, isPending: applicationPending } =
+        useApplyAsTechnician();
 
     const resumeInputRef = useRef<HTMLInputElement>(null);
     const additionalFileInputRef = useRef<HTMLInputElement>(null);
 
-    const form = useForm({
-        defaultValues: {
-            name: 'Dr Siyana',
-            email: 'drsiyana@gmail.com',
-            password: 'PAssWord5288$@@',
-            phone: '01912345678',
-            address: 'RMCH, Rangpur',
-            specialization: 'Cardiologist',
-            licenseNumber: 'ABC123',
-            qualifications: 'MBBS',
-            experienceYears: '5',
-            consultationFee: '10000',
-            bio: 'My life, my rules.',
-            resume: null as File | null,
-            additionalFiles: [] as File[],
+    type TechnicianFormValues = Omit<
+        z.infer<typeof technicianApplicationSchema>,
+        'resume'
+    > & {
+        resume: File | null;
+    };
 
-            // name: '',
-            // email: '',
-            // phone: '',
-            // address: '',
-            // specialization: '',
-            // licenseNumber: '',
-            // qualifications: '',
-            // experienceYears: '',
-            // consultationFee: '',
-            // bio: '',
-            // resume: null as File | null,
-            // additionalFiles: [] as File[],
-        },
+    const defaultValues: TechnicianFormValues = {
+        name: 'Mr Technician',
+        email: 'technician@gmail.com',
+        password: 'PAssWord5288$@@',
+        phone: '01912345678',
+        address: 'RTC, Rangpur',
+        employeeId: 'TECH001',
+        skills: 'Electrical maintenance, installation, troubleshooting',
+        experienceYears: '3',
+        bio: 'Diploma in Electrical Engineering with skills in electrical maintenance, installation, and troubleshooting.',
+        resume: null,
+        additionalFiles: [],
+    };
+
+    const form = useForm({
+        defaultValues,
 
         validators: {
             onSubmit: technicianApplicationSchema,
         },
 
         onSubmit: async ({ value }) => {
+            if (!(value.resume instanceof File)) {
+                toast.add({
+                    title: 'Resume Required',
+                    description: 'Please upload your resume or CV.',
+                    type: 'error',
+                });
+                return;
+            }
+
             const technicianData: TechnicianApplicationData = {
                 user: {
                     name: value.name.trim(),
                     email: value.email.trim(),
                 },
-                doctor: {
-                    specialization: value.specialization.trim(),
-                    licenseNumber: value.licenseNumber.trim(),
-                    qualifications: value.qualifications.trim(),
+
+                technician: {
+                    phone: value.phone.trim(),
+                    employeeId: value.employeeId.trim(),
+                    skills: value.skills?.trim() || undefined,
                     experienceYears: Number(value.experienceYears),
-                    contactNumber: value.phone.trim(),
-                    address: value.address.trim(),
-                    consultationFee: value.consultationFee.trim()
-                        ? Number(value.consultationFee)
-                        : undefined,
-                    bio: value.bio.trim(),
+                    bio: value.bio?.trim() || undefined,
                 },
             };
 
@@ -135,7 +131,7 @@ const TechnicianApplyForm = () => {
                         });
 
                         router.push(
-                            `/applyAsDoctor/verify-account?${params.toString()}`,
+                            `/applyAsTechnician/verify-account?${params.toString()}`,
                         );
                     },
 
@@ -158,7 +154,7 @@ const TechnicianApplyForm = () => {
             {/* Header */}
             <div className="flex flex-col gap-2 text-center">
                 <h1 className="text-2xl font-bold tracking-tight">
-                    Apply to join SR Healthcare
+                    Apply to join Gridcare
                 </h1>
             </div>
 
@@ -190,7 +186,7 @@ const TechnicianApplyForm = () => {
                                                 id={field.name}
                                                 name={field.name}
                                                 type="text"
-                                                placeholder="Dr. John Doe"
+                                                placeholder=" Mr. Rana"
                                                 value={field.state.value}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) =>
@@ -230,7 +226,7 @@ const TechnicianApplyForm = () => {
                                                 id={field.name}
                                                 name={field.name}
                                                 type="email"
-                                                placeholder="doctor@example.com"
+                                                placeholder="technician@example.com"
                                                 value={field.state.value}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) =>
@@ -336,123 +332,6 @@ const TechnicianApplyForm = () => {
                             }}
                         </form.Field>
 
-                        {/* Specialization */}
-                        <form.Field name="specialization">
-                            {(field) => {
-                                const isInvalid =
-                                    field.state.meta.isTouched &&
-                                    !field.state.meta.isValid;
-                                return (
-                                    <Field data-invalid={isInvalid}>
-                                        <FieldLabel htmlFor={field.name}>
-                                            Specialization
-                                        </FieldLabel>
-                                        <div className="relative">
-                                            <Stethoscope className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                                            <Input
-                                                id={field.name}
-                                                name={field.name}
-                                                type="text"
-                                                placeholder="Cardiology"
-                                                value={field.state.value}
-                                                onBlur={field.handleBlur}
-                                                onChange={(e) =>
-                                                    field.handleChange(
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                aria-invalid={isInvalid}
-                                                className="pl-9"
-                                            />
-                                        </div>
-                                        {isInvalid && (
-                                            <FieldError
-                                                errors={field.state.meta.errors}
-                                            />
-                                        )}
-                                    </Field>
-                                );
-                            }}
-                        </form.Field>
-
-                        {/* License Number */}
-                        <form.Field name="licenseNumber">
-                            {(field) => {
-                                const isInvalid =
-                                    field.state.meta.isTouched &&
-                                    !field.state.meta.isValid;
-                                return (
-                                    <Field data-invalid={isInvalid}>
-                                        <FieldLabel htmlFor={field.name}>
-                                            BMDC Registration Number
-                                        </FieldLabel>
-                                        <div className="relative">
-                                            <BadgeCheck className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                                            <Input
-                                                id={field.name}
-                                                name={field.name}
-                                                type="text"
-                                                placeholder="A-12345"
-                                                value={field.state.value}
-                                                onBlur={field.handleBlur}
-                                                onChange={(e) =>
-                                                    field.handleChange(
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                aria-invalid={isInvalid}
-                                                className="pl-9"
-                                            />
-                                        </div>
-                                        {isInvalid && (
-                                            <FieldError
-                                                errors={field.state.meta.errors}
-                                            />
-                                        )}
-                                    </Field>
-                                );
-                            }}
-                        </form.Field>
-
-                        {/* Qualifications */}
-                        <form.Field name="qualifications">
-                            {(field) => {
-                                const isInvalid =
-                                    field.state.meta.isTouched &&
-                                    !field.state.meta.isValid;
-                                return (
-                                    <Field data-invalid={isInvalid}>
-                                        <FieldLabel htmlFor={field.name}>
-                                            Qualifications
-                                        </FieldLabel>
-                                        <div className="relative">
-                                            <GraduationCap className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                                            <Input
-                                                id={field.name}
-                                                name={field.name}
-                                                type="text"
-                                                placeholder="MBBS, FCPS (Medicine)"
-                                                value={field.state.value}
-                                                onBlur={field.handleBlur}
-                                                onChange={(e) =>
-                                                    field.handleChange(
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                aria-invalid={isInvalid}
-                                                className="pl-9"
-                                            />
-                                        </div>
-                                        {isInvalid && (
-                                            <FieldError
-                                                errors={field.state.meta.errors}
-                                            />
-                                        )}
-                                    </Field>
-                                );
-                            }}
-                        </form.Field>
-
                         {/* Experience */}
                         <form.Field name="experienceYears">
                             {(field) => {
@@ -474,51 +353,6 @@ const TechnicianApplyForm = () => {
                                                 max={70}
                                                 inputMode="numeric"
                                                 placeholder="10"
-                                                value={field.state.value}
-                                                onBlur={field.handleBlur}
-                                                onChange={(e) =>
-                                                    field.handleChange(
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                aria-invalid={isInvalid}
-                                                className="pl-9"
-                                            />
-                                        </div>
-                                        {isInvalid && (
-                                            <FieldError
-                                                errors={field.state.meta.errors}
-                                            />
-                                        )}
-                                    </Field>
-                                );
-                            }}
-                        </form.Field>
-
-                        {/* ConsultationFee */}
-                        <form.Field name="consultationFee">
-                            {(field) => {
-                                const isInvalid =
-                                    field.state.meta.isTouched &&
-                                    !field.state.meta.isValid;
-                                return (
-                                    <Field data-invalid={isInvalid}>
-                                        <FieldLabel htmlFor={field.name}>
-                                            Consultation Fee (BDT){' '}
-                                            <span className="font-normal text-muted-foreground">
-                                                (optional)
-                                            </span>
-                                        </FieldLabel>
-                                        <div className="relative">
-                                            <Banknote className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                                            <Input
-                                                id={field.name}
-                                                name={field.name}
-                                                type="number"
-                                                min={0}
-                                                step="0.01"
-                                                inputMode="decimal"
-                                                placeholder="1000"
                                                 value={field.state.value}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) =>
@@ -821,11 +655,19 @@ const TechnicianApplyForm = () => {
                 </FieldGroup>
 
                 {/* Submit */}
-                <div className="flex justify-end w-full mt-5">
-                    <Button type="submit" size="lg" className="w-full">
-                        Submit
-                    </Button>
-                </div>
+                <Button
+                    disabled={applicationPending}
+                    type="submit"
+                    className="w-full"
+                >
+                    {applicationPending ? (
+                        <>
+                            <Spinner /> submitting
+                        </>
+                    ) : (
+                        'Submit'
+                    )}
+                </Button>
             </form>
 
             {/* Sign In / Login Link */}
@@ -833,14 +675,14 @@ const TechnicianApplyForm = () => {
                 Already an approved technician?{' '}
                 <Link
                     href="/login"
-                    className="font-medium underline underline-offset-4 hover:text-primary"
+                    className="font-medium underline underline-offset-4 text-[#0055B8] hover:text-primary"
                 >
                     Sign in to the Technician Portal
                 </Link>
                 . Customewr applications should use the{' '}
                 <Link
                     href="/register"
-                    className="font-medium underline underline-offset-4 hover:text-primary"
+                    className="font-medium underline underline-offset-4 text-[#0055B8] hover:text-primary"
                 >
                     customer registration
                 </Link>{' '}

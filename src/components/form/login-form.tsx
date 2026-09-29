@@ -28,9 +28,9 @@ const LoginForm = () => {
 
     const { mutate: login, isPending: loginPending } = useLogin();
 
-    type PatientDefaultValues = z.infer<typeof loginSchema>;
+    type UserDefaultValues = z.infer<typeof loginSchema>;
 
-    const defaultValues: PatientDefaultValues = {
+    const defaultValues: UserDefaultValues = {
         email: 'msahrana@gmail.com',
         password: 'SAYed#@5288%$@',
 
@@ -40,12 +40,12 @@ const LoginForm = () => {
         // },
 
         // defaultValues: {
-        //     email: 'testerdoctor@gmail.com', //doctor
-        //     password: 'Tester@doctor12345',
+        //     email: 'testertechnician@gmail.com', //technician
+        //     password: 'Tester@technician12345',
         // },
 
         // defaultValues: {
-        //     email: 'drsiyana3@gmail.com', //doctor
+        //     email: 'drsiyana3@gmail.com', //technician
         //     password: '5*MCj*Fgj5',
         // },
     };

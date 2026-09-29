@@ -4,9 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-import { useVerifyAccount } from '@/hooks';
-
+import { useVerifyAccount, useVerifyTechnicianAccount } from '@/hooks';
 import { Button } from '../ui/button';
 import {
     Card,
@@ -19,7 +17,6 @@ import {
 import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { toast } from '../ui/toast';
-import { useVerifyTechnicianAccount } from '@/hooks/technician.hook';
 
 const RESEND_COOL_DOWN = 120;
 
@@ -38,6 +35,7 @@ const VerifyAccountForm = ({
 
     const { mutate: verifyAccount, isPending: verificationPending } =
         useVerifyAccount();
+
     const { mutate: verifyTechnician } = useVerifyTechnicianAccount();
 
     const verify = mode === 'technician' ? verifyTechnician : verifyAccount;
@@ -94,7 +92,6 @@ const VerifyAccountForm = ({
                     });
 
                     router.push('/');
-
                     return;
                 }
 

@@ -32,7 +32,7 @@ export const getCustomFileSchema = <T>(message: string) =>
                 isAcceptedFileSize(value.size) &&
                 isAcceptedFileType(value.type)),
         {
-            message: message,
+            message,
         },
     );
 
@@ -47,45 +47,38 @@ export const technicianApplicationSchema = z.object({
     password: z
         .string()
         .trim()
-        .min(8, 'Password Must Minimum 8 Characters Long.')
-        .regex(/[a-z]/, 'Password must contain at least 1 Lowercase Letter')
-        .regex(/[A-Z]/, 'Password must contain at least 1 Uppercase Letter')
-        .regex(/[0-9]/, 'Password must contain at least 1 Number')
+        .min(8, 'Password must be minimum 8 characters long.')
+        .regex(/[a-z]/, 'Password must contain at least 1 lowercase letter')
+        .regex(/[A-Z]/, 'Password must contain at least 1 uppercase letter')
+        .regex(/[0-9]/, 'Password must contain at least 1 number')
         .regex(
             /[^A-Za-z0-9]/,
-            'Password must contain at least 1 Special Character',
+            'Password must contain at least 1 special character',
         ),
 
-    phone: z.string().trim().min(5, 'Contact number is invalid'),
+    phone: z
+        .string()
+        .trim()
+        .min(11, 'Phone number must be at least 11 characters'),
 
-    address: z.string().trim(),
+    address: z.string().trim().min(2, 'Address is required'),
 
-    specialization: z.string().trim().min(2, 'Specialization is required'),
+    employeeId: z
+        .string()
+        .trim()
+        .min(2, 'Employee ID must be at least 2 characters'),
 
-    licenseNumber: z.string().trim().min(3, 'License number is required'),
-
-    qualifications: z.string().trim().min(2, 'Qualifications are required'),
+    skills: z.string().trim().optional(),
 
     experienceYears: z
         .string()
         .trim()
         .refine((value) => /^\d+$/.test(value), {
-            message: 'Years of experience must be whole value',
+            message: 'Years of experience must be a whole number',
         })
         .refine((value) => Number(value) >= 0 && Number(value) <= 60, {
             message: 'Years of experience must be between 0 and 60',
         }),
-
-    consultationFee: z
-        .string()
-        .trim()
-        .refine(
-            (value) =>
-                value === '' || (/^\d+$/.test(value) && Number(value) >= 0),
-            {
-                message: 'Consultation fee must be a non-zero whole number',
-            },
-        ),
 
     bio: z
         .string()
@@ -95,7 +88,7 @@ export const technicianApplicationSchema = z.object({
     resume: getCustomFileSchema<File | null>(
         `Resume must be a PDF, DOC, DOCX or an image file under ${MAX_FILE_SIZE}MB`,
     ).refine((value) => value instanceof File, {
-        message: 'A resume of cv is required',
+        message: 'A resume or CV is required',
     }),
 
     additionalFiles: z

@@ -30,11 +30,11 @@ const RegisterForm = () => {
     const router = useRouter();
     const { mutate: register, isPending: registrationPending } = useRegister();
 
-    type PatientDefaultValues = z.infer<typeof registerSchema>;
+    type CustomerDefaultValues = z.infer<typeof registerSchema>;
 
-    const defaultValues: PatientDefaultValues = {
-        name: 'Tara Mony',
-        email: 'mosttaramony@gmail.com',
+    const defaultValues: CustomerDefaultValues = {
+        name: 'Tara Mony 1',
+        email: 'mosttaramony1@gmail.com',
         password: '',
         confirmPassword: '',
     };

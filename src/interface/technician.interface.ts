@@ -5,15 +5,15 @@ export interface TechnicianApplicationData {
         name: string;
         email: string;
     };
-    doctor: {
-        specialization: string;
-        licenseNumber: string;
-        qualifications: string;
+
+    technician: {
+        phone: string;
+        employeeId: string;
+        skills?: string;
         experienceYears: number;
-        contactNumber: string;
-        address: string;
-        consultationFee: number | undefined;
-        bio: string;
+        technicianFee?: number;
+        zoneId?: string;
+        bio?: string;
     };
 }
 
@@ -30,7 +30,6 @@ export interface Technician {
     name: string;
     email: string;
     address?: string | null;
-    specialization: string;
     licenseNumber: string;
     qualifications: string;
     experienceYears: number;
@@ -60,7 +59,7 @@ export interface TechnicianParams {
 }
 
 export interface ApproveTechnicianPayload {
-    doctorId: string;
+    technicianId: string;
     verificationStatus: 'AVAILABLE' | 'OFFLINE';
     rejectionReason?: string;
 }
@@ -70,7 +69,6 @@ export interface PublicTechnicianProfile {
     name: string;
     specialization: string;
     licenseNumber: string;
-    qualifications: string;
     experienceYears: number;
     bio?: string | null;
     consultationFee?: number | string | null;

@@ -11,8 +11,7 @@ import {
     getAllPublicTechnicians,
     getAllTechnicians,
     verifyTechnicianAccount,
-} from '@/api/technician.api';
-
+} from '@/api';
 import { PublicTechnicianParams, TechnicianParams } from '@/interface';
 
 export function useApplyAsTechnician() {
@@ -36,7 +35,7 @@ export function useGetAllTechnicians(params: TechnicianParams) {
 
 export function useSuspenseGetAllTechnicians(params: TechnicianParams) {
     return useSuspenseQuery({
-        queryKey: ['doctors', params],
+        queryKey: ['technicians', params],
         queryFn: () => getAllTechnicians(params),
     });
 }
@@ -54,33 +53,16 @@ export function useApproveTechnician() {
 
 export function useGetAllPublicTechnicians(params: PublicTechnicianParams) {
     return useQuery({
-        queryKey: ['doctor', 'public', params],
+        queryKey: ['technician', 'public', params],
         queryFn: () => getAllPublicTechnicians(params),
     });
 }
 
-export function useSuspenseGetPublicDoctors(params: PublicTechnicianParams) {
+export function useSuspenseGetPublictechnicians(
+    params: PublicTechnicianParams,
+) {
     return useSuspenseQuery({
-        queryKey: ['doctors', 'public', params],
+        queryKey: ['technicians', 'public', params],
         queryFn: () => getAllPublicTechnicians(params),
     });
 }
-
-// export function usePublicDoctorProfile(doctorId: string) {
-//     return useQuery({
-//         queryKey: ['doctor', 'public', doctorId],
-//         queryFn: () => getPublicTechnicianProfile(doctorId),
-//         enabled: !!doctorId,
-//     });
-// }
-
-// export function useGetTodayScheduleByTechnician(params: {
-//     doctorId?: string;
-//     page?: number;
-//     limit?: number;
-// }) {
-//     return useQuery({
-//         queryKey: ['schedule', params],
-//         queryFn: () => getTodayScheduleByTechnician(params),
-//     });
-// }

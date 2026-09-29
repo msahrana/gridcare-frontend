@@ -22,7 +22,7 @@ const dashboardRoute: Record<UserRole, string> = {
     ADMIN: '/admin',
     OPERATOR: '/admin',
     TECHNICIAN: '/technician',
-    CUSTOMER: '/dashboard',
+    CUSTOMER: '/customer',
 };
 
 export default function Header() {
