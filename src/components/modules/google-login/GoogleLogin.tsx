@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 
 const GoogleLoginComponent = () => {
     const router = useRouter();
-
     const { mutate: googleLogin } = useGoogleOAuth();
 
     const handleGoogleSuccess = (credentialResponse: {
