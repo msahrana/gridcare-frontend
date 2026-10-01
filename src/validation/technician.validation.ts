@@ -44,24 +44,10 @@ export const technicianApplicationSchema = z.object({
 
     email: z.email('Please enter a valid email address'),
 
-    password: z
-        .string()
-        .trim()
-        .min(8, 'Password must be minimum 8 characters long.')
-        .regex(/[a-z]/, 'Password must contain at least 1 lowercase letter')
-        .regex(/[A-Z]/, 'Password must contain at least 1 uppercase letter')
-        .regex(/[0-9]/, 'Password must contain at least 1 number')
-        .regex(
-            /[^A-Za-z0-9]/,
-            'Password must contain at least 1 special character',
-        ),
-
     phone: z
         .string()
         .trim()
         .min(11, 'Phone number must be at least 11 characters'),
-
-    address: z.string().trim().min(2, 'Address is required'),
 
     employeeId: z
         .string()
@@ -83,7 +69,8 @@ export const technicianApplicationSchema = z.object({
     bio: z
         .string()
         .trim()
-        .max(MAX_BIO_LENGTH, `Bio cannot exceed ${MAX_BIO_LENGTH} characters`),
+        .max(MAX_BIO_LENGTH, `Bio cannot exceed ${MAX_BIO_LENGTH} characters`)
+        .optional(),
 
     resume: getCustomFileSchema<File | null>(
         `Resume must be a PDF, DOC, DOCX or an image file under ${MAX_FILE_SIZE}MB`,

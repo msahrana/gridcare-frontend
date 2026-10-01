@@ -15,13 +15,13 @@ const TechnicianApprovalTableLoading = () => {
         <div className="border rounded-lg">
             <Table>
                 <TableHeader>
-                    <TableRow>
+                    <TableRow className="hover:bg-transparent">
                         <TableHead>Name</TableHead>
-                        <TableHead>License No.</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Contact No.</TableHead>
-                        <TableHead>Specialization</TableHead>
+                        <TableHead>EmployeeId</TableHead>
+                        <TableHead>Skills</TableHead>
+                        <TableHead>Phone</TableHead>
                         <TableHead>Experience (Years)</TableHead>
+                        <TableHead>Status</TableHead>
                         <TableHead className="text-right">Action</TableHead>
                     </TableRow>
                 </TableHeader>

@@ -65,7 +65,7 @@ const LoginForm = () => {
 
             login(loginData, {
                 onSuccess: (res) => {
-                    console.log(res);
+                    console.log('LOGIN SUCCESS:', res);
                     toast.add({
                         title: 'Login Successfully!',
                         description: res.message || 'Welcome Back to Homepage',

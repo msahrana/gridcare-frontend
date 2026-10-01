@@ -18,11 +18,11 @@ const RegisterPage = () => {
 
             <div className="relative hidden bg-muted lg:block">
                 <Image
-                    src="/register.png"
-                    width={800}
-                    height={600}
+                    src="/Res-Photo.png"
+                    width={880}
+                    height={800}
                     alt="Image"
-                    className="absolute inset-0 h-full w-full  object-cover dark:brightness-[0.2] dark:grayscale"
+                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                 />
             </div>
         </div>

@@ -1,5 +1,3 @@
-import { User } from './auth.interface';
-
 export interface TechnicianApplicationData {
     user: {
         name: string;
@@ -25,29 +23,65 @@ export interface TechnicianApplicationPayload {
 
 export type TechnicianVerificationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
-export interface Technician {
+export type TechnicianStatus = 'AVAILABLE' | 'OFFLINE';
+
+export interface TechnicianAdditionalFile {
+    url: string;
+    publicId: string;
+    resourceType: string;
+    originalFilename: string;
+}
+
+export interface TechnicianUser {
     id: string;
     name: string;
     email: string;
-    address?: string | null;
-    licenseNumber: string;
-    qualifications: string;
-    experienceYears: number;
-    bio?: string | null;
-    consultationFee?: number | string | null;
-    contactNumber?: string | null;
-    verificationStatus: TechnicianVerificationStatus;
-    rejectionReason?: string | null;
-    reviewedBy?: string | null;
-    reviewedAt?: string | null;
-    resume?: string | null;
-    additionalFiles?: { url: string; publicId: string }[] | null;
+    role: string;
+    status: string;
+    emailVerified: boolean;
     isDeleted: boolean;
-    deletedAt?: null | string;
+    needPasswordChange: boolean;
+    googleId: string | null;
+    authProvider: string;
+    imageUrl: string;
+    imagePublicId: string;
     createdAt: string;
     updatedAt: string;
+    deletedAt: string | null;
+}
+
+export interface Technician {
+    id: string;
     userId: string;
-    user: User;
+    phone: string | null;
+    employeeId: string;
+    bio?: string | null;
+    address?: string | null;
+    skills: string;
+    experienceYears: number;
+    resume: string;
+    resumePublicId: string;
+    additionalFiles?: TechnicianAdditionalFile[] | null;
+    status: TechnicianStatus;
+    verificationStatus: TechnicianVerificationStatus;
+    rejectionReason: string | null;
+    zoneId: string | null;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    user: TechnicianUser;
+}
+
+export interface TechnicianMeta {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+}
+
+export interface TechnicianResponse {
+    data: Technician[];
+    meta: TechnicianMeta;
 }
 
 export interface TechnicianParams {
@@ -60,26 +94,6 @@ export interface TechnicianParams {
 
 export interface ApproveTechnicianPayload {
     technicianId: string;
-    verificationStatus: 'AVAILABLE' | 'OFFLINE';
+    verificationStatus: 'APPROVED' | 'REJECTED';
     rejectionReason?: string;
-}
-
-export interface PublicTechnicianProfile {
-    id: string;
-    name: string;
-    specialization: string;
-    licenseNumber: string;
-    experienceYears: number;
-    bio?: string | null;
-    consultationFee?: number | string | null;
-    createdAt: string;
-}
-
-export interface PublicTechnicianParams {
-    page?: number;
-    limit?: number;
-    searchTerm?: string;
-    specialization?: string;
-    sortBy?: string;
-    sortOrder?: 'desc' | 'asc';
 }

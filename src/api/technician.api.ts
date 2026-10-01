@@ -1,8 +1,6 @@
 import { ApiResponse, ICredentialVerifyOTP } from '@/interface';
 import {
     ApproveTechnicianPayload,
-    PublicTechnicianParams,
-    PublicTechnicianProfile,
     Technician,
     TechnicianApplicationPayload,
     TechnicianParams,
@@ -33,12 +31,9 @@ export function verifyTechnicianAccount(payload: ICredentialVerifyOTP) {
 }
 
 export function getAllTechnicians(params: TechnicianParams) {
-    return apiClient<ApiResponse<Technician[]>>(
-        '/technicians/all-technician',
-        {
-            params,
-        },
-    );
+    return apiClient<ApiResponse<Technician[]>>('/technicians/all-technician', {
+        params,
+    });
 }
 
 export function approveTechnician(payload: ApproveTechnicianPayload) {
@@ -48,11 +43,11 @@ export function approveTechnician(payload: ApproveTechnicianPayload) {
     });
 }
 
-export function getAllPublicTechnicians(params: PublicTechnicianParams) {
-    return apiClient<ApiResponse<PublicTechnicianProfile[]>>(
-        '/technicians/public/all-technicians',
-        {
-            params,
-        },
-    );
-}
+// export function getAllPublicTechnicians(params: PublicTechnicianParams) {
+//     return apiClient<ApiResponse<PublicTechnicianProfile[]>>(
+//         '/technicians/public/all-technicians',
+//         {
+//             params,
+//         },
+//     );
+// }

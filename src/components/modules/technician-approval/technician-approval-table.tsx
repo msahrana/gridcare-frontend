@@ -1,4 +1,6 @@
+import { SearchX } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
+import { Button } from '@/components/ui/button';
 import {
     Table,
     TableBody,
@@ -7,11 +9,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import TablePagination from '@/components/ui/table-pagination';
 import { useSuspenseGetAllTechnicians } from '@/hooks';
 import { TechnicianParams } from '@/interface';
-import { SearchX } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import TablePagination from '@/components/ui/table-pagination';
 
 interface Props extends TechnicianParams {
     handleReview: Dispatch<SetStateAction<string>>;
@@ -24,7 +24,7 @@ const TechnicianApprovalTable = ({
     ...params
 }: Props) => {
     const { data } = useSuspenseGetAllTechnicians(params);
-
+    
     const technicians = data?.data ?? [];
     const totalPages = data?.meta?.totalPages ?? 0;
     const isEmpty = technicians.length === 0;
@@ -36,11 +36,11 @@ const TechnicianApprovalTable = ({
                     <TableHeader>
                         <TableRow className="hover:bg-transparent">
                             <TableHead>Name</TableHead>
-                            <TableHead>License No.</TableHead>
-                            <TableHead>Email</TableHead>
-                            <TableHead>Contact No.</TableHead>
-                            <TableHead>Specialization</TableHead>
+                            <TableHead>EmployeeId</TableHead>
+                            <TableHead>Skills</TableHead>
+                            <TableHead>Phone</TableHead>
                             <TableHead>Experience (Years)</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead className="text-right">Action</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -67,17 +67,44 @@ const TechnicianApprovalTable = ({
                         ) : (
                             technicians.map((technician) => (
                                 <TableRow key={technician.id}>
-                                    <TableCell>{technician.name}</TableCell>
-
-                                    <TableCell>{technician.email}</TableCell>
                                     <TableCell>
-                                        {technician.contactNumber
-                                            ? technician.contactNumber
+                                        {technician.user.name}
+                                    </TableCell>
+                                    <TableCell>
+                                        {technician.employeeId}
+                                    </TableCell>
+                                    <TableCell className="max-w-55 whitespace-normal">
+                                        {technician.skills
+                                            ? technician.skills
+                                                  .split(',')
+                                                  .map((skill) => (
+                                                      <div key={skill.trim()}>
+                                                          {skill.trim()}
+                                                      </div>
+                                                  ))
+                                            : '- - -'}
+                                    </TableCell>
+                                    <TableCell>
+                                        {technician.phone
+                                            ? technician.phone
                                             : '- - -'}
                                     </TableCell>
 
                                     <TableCell>
                                         {technician.experienceYears}
+                                    </TableCell>
+                                    <TableCell
+                                        className={
+                                            technician.verificationStatus ===
+                                            'PENDING'
+                                                ? 'text-red-600'
+                                                : technician.verificationStatus ===
+                                                    'APPROVED'
+                                                  ? 'text-green-600'
+                                                  : 'text-gray-600'
+                                        }
+                                    >
+                                        {technician.verificationStatus}
                                     </TableCell>
                                     <TableCell className="text-right">
                                         {technician.user.emailVerified ? (

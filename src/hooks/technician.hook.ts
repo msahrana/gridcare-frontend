@@ -8,11 +8,10 @@ import {
 import {
     applyAsTechnician,
     approveTechnician,
-    getAllPublicTechnicians,
     getAllTechnicians,
     verifyTechnicianAccount,
 } from '@/api';
-import { PublicTechnicianParams, TechnicianParams } from '@/interface';
+import { TechnicianParams } from '@/interface';
 
 export function useApplyAsTechnician() {
     return useMutation({
@@ -28,7 +27,7 @@ export function useVerifyTechnicianAccount() {
 
 export function useGetAllTechnicians(params: TechnicianParams) {
     return useQuery({
-        queryKey: ['Technicians', params],
+        queryKey: ['technicians', params],
         queryFn: () => getAllTechnicians(params),
     });
 }
@@ -46,23 +45,25 @@ export function useApproveTechnician() {
     return useMutation({
         mutationFn: approveTechnician,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['Technicians'] });
+            queryClient.invalidateQueries({
+                queryKey: ['technicians'],
+            });
         },
     });
 }
 
-export function useGetAllPublicTechnicians(params: PublicTechnicianParams) {
-    return useQuery({
-        queryKey: ['technician', 'public', params],
-        queryFn: () => getAllPublicTechnicians(params),
-    });
-}
+// export function useGetAllPublicTechnicians(params: PublicTechnicianParams) {
+//     return useQuery({
+//         queryKey: ['technician', 'public', params],
+//         queryFn: () => getAllPublicTechnicians(params),
+//     });
+// }
 
-export function useSuspenseGetPublictechnicians(
-    params: PublicTechnicianParams,
-) {
-    return useSuspenseQuery({
-        queryKey: ['technicians', 'public', params],
-        queryFn: () => getAllPublicTechnicians(params),
-    });
-}
+// export function useSuspenseGetPublictechnicians(
+//     params: PublicTechnicianParams,
+// ) {
+//     return useSuspenseQuery({
+//         queryKey: ['technicians', 'public', params],
+//         queryFn: () => getAllPublicTechnicians(params),
+//     });
+// }
