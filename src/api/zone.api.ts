@@ -1,4 +1,4 @@
-import { ICreateZone, SingleZoneResponse } from '@/interface';
+import { ICreateZone, SingleZoneResponse, ZoneParams } from '@/interface';
 import apiClient from '@/lib/apiClient';
 
 export function createZone(payload: ICreateZone) {
@@ -8,8 +8,10 @@ export function createZone(payload: ICreateZone) {
     });
 }
 
-export function getAllZones() {
-    return apiClient('/zones');
+export function getAllZones(params: ZoneParams) {
+    return apiClient('/zones', {
+        params,
+    });
 }
 
 export function updateZone(id: string, payload: Omit<ICreateZone, 'id'>) {

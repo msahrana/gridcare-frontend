@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { Pencil } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,22 +17,41 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-import { useCreateZone } from '@/hooks/zone.hook';
+import { useUpdateZone } from '@/hooks/zone.hook';
 
-const CreateZone = () => {
+interface UpdateZoneProps {
+    zone: {
+        id: string;
+        name: string;
+        code: string;
+        description?: string | null;
+    };
+}
+
+const UpdateZone = ({ zone }: UpdateZoneProps) => {
     const [open, setOpen] = useState(false);
 
-    const [name, setName] = useState('');
-    const [code, setCode] = useState('');
-    const [description, setDescription] = useState('');
+    const [name, setName] = useState(zone.name);
+    const [code, setCode] = useState(zone.code);
+    const [description, setDescription] = useState(zone.description ?? '');
 
-    const { mutate: createZone, isPending } = useCreateZone();
+    const { mutate: updateZone, isPending } = useUpdateZone();
+
+    // Update form values whenever the dialog receives different zone data
+    useEffect(() => {
+        if (open) {
+            setName(zone.name);
+            setCode(zone.code);
+            setDescription(zone.description ?? '');
+        }
+    }, [open, zone]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        createZone(
+        updateZone(
             {
+                id: zone.id,
                 name,
                 code,
                 description,
@@ -39,11 +59,6 @@ const CreateZone = () => {
             {
                 onSuccess: () => {
                     setOpen(false);
-
-                    // Reset form
-                    setName('');
-                    setCode('');
-                    setDescription('');
                 },
             },
         );
@@ -52,27 +67,34 @@ const CreateZone = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
-                <Button className="hover:bg-[#0055B8]">Create New Zone</Button>
+                <Button
+                    variant="outline"
+                    size="icon"
+                    className="hover:bg-[#0055B8] hover:text-white"
+                >
+                    <Pencil className="h-4 w-4" />
+                    <span className="sr-only">Edit Zone</span>
+                </Button>
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-125">
                 <DialogHeader>
-                    <DialogTitle>Create New Zone</DialogTitle>
+                    <DialogTitle>Update Zone</DialogTitle>
 
                     <DialogDescription>
-                        Create a new production zone for your organization.
+                        Update the production zone information below.
                     </DialogDescription>
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Name */}
                     <div className="space-y-2">
-                        <Label htmlFor="name">
+                        <Label htmlFor={`name-${zone.id}`}>
                             Zone Name <span className="text-red-500">*</span>
                         </Label>
 
                         <Input
-                            id="name"
+                            id={`name-${zone.id}`}
                             placeholder="e.g. Production Zone A"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -82,12 +104,12 @@ const CreateZone = () => {
 
                     {/* Code */}
                     <div className="space-y-2">
-                        <Label htmlFor="code">
+                        <Label htmlFor={`code-${zone.id}`}>
                             Zone Code <span className="text-red-500">*</span>
                         </Label>
 
                         <Input
-                            id="code"
+                            id={`code-${zone.id}`}
                             placeholder="e.g. ZONE-A"
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
@@ -97,10 +119,12 @@ const CreateZone = () => {
 
                     {/* Description */}
                     <div className="space-y-2">
-                        <Label htmlFor="description">Description</Label>
+                        <Label htmlFor={`description-${zone.id}`}>
+                            Description
+                        </Label>
 
                         <Textarea
-                            id="description"
+                            id={`description-${zone.id}`}
                             placeholder="Enter zone description..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -123,7 +147,7 @@ const CreateZone = () => {
                             className="hover:bg-[#0055B8]"
                             disabled={isPending}
                         >
-                            {isPending ? 'Creating...' : 'Create Zone'}
+                            {isPending ? 'Updating...' : 'Update Zone'}
                         </Button>
                     </DialogFooter>
                 </form>
@@ -132,4 +156,4 @@ const CreateZone = () => {
     );
 };
 
-export default CreateZone;
+export default UpdateZone;

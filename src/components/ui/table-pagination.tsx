@@ -1,5 +1,9 @@
-/** biome-ignore-all lint/suspicious/noArrayIndexKey: <explanation> */
-import { Dispatch, SetStateAction } from 'react';
+/* biome-ignore-all lint/suspicious/noArrayIndexKey: Ellipsis items require positional keys */
+
+'use client';
+
+import type { Dispatch, SetStateAction } from 'react';
+
 import {
     Pagination,
     PaginationContent,
@@ -14,14 +18,19 @@ const getButtonArray = (
     totalPages: number,
     page: number,
 ): (number | 'ellipsis')[] => {
+    // 1 - 7 pages
     if (totalPages <= 7) {
         return Array.from({ length: totalPages }, (_, index) => index + 1);
     }
 
+    // First pages
+    // 1 2 3 4 5 ... 20
     if (page <= 4) {
         return [1, 2, 3, 4, 5, 'ellipsis', totalPages];
     }
 
+    // Last pages
+    // 1 ... 16 17 18 19 20
     if (page >= totalPages - 3) {
         return [
             1,
@@ -34,31 +43,36 @@ const getButtonArray = (
         ];
     }
 
+    // Middle pages
+    // 1 ... 9 10 11 ... 20
     return [1, 'ellipsis', page - 1, page, page + 1, 'ellipsis', totalPages];
 };
 
 interface Props {
     totalPages: number;
-    handlePageChange: Dispatch<SetStateAction<number>>;
     page: number;
+    handlePageChange: Dispatch<SetStateAction<number>>;
 }
 
-export default function TablePagination({
-    totalPages,
-    handlePageChange,
-    page,
-}: Props) {
-    const goToPage = (page: number) => {
-        handlePageChange(page);
-    };
-
+const TablePagination = ({ totalPages, page, handlePageChange }: Props) => {
     if (totalPages <= 1) {
         return null;
     }
 
+    const goToPage = (nextPage: number) => {
+        if (nextPage < 1 || nextPage > totalPages || nextPage === page) {
+            return;
+        }
+
+        handlePageChange(nextPage);
+    };
+
+    const buttonArray = getButtonArray(totalPages, page);
+
     return (
         <Pagination>
             <PaginationContent>
+                {/* Previous */}
                 <PaginationItem>
                     <PaginationPrevious
                         onClick={() => goToPage(page - 1)}
@@ -71,20 +85,20 @@ export default function TablePagination({
                     />
                 </PaginationItem>
 
-                <PaginationItem>
-                    <PaginationEllipsis />
-                </PaginationItem>
-
-                {getButtonArray(totalPages, page).map((item, index) =>
+                {/* Page Numbers */}
+                {buttonArray.map((item, index) =>
                     item === 'ellipsis' ? (
-                        <PaginationItem key={`ellipsis${index}`}>
+                        <PaginationItem key={`ellipsis-${index}`}>
                             <PaginationEllipsis />
                         </PaginationItem>
                     ) : (
                         <PaginationItem key={item}>
                             <PaginationLink
-                                onClick={() => handlePageChange(item)}
+                                onClick={() => goToPage(item)}
                                 isActive={page === item}
+                                aria-current={
+                                    page === item ? 'page' : undefined
+                                }
                             >
                                 {item}
                             </PaginationLink>
@@ -92,6 +106,7 @@ export default function TablePagination({
                     ),
                 )}
 
+                {/* Next */}
                 <PaginationItem>
                     <PaginationNext
                         onClick={() => goToPage(page + 1)}
@@ -106,4 +121,6 @@ export default function TablePagination({
             </PaginationContent>
         </Pagination>
     );
-}
+};
+
+export default TablePagination;

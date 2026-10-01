@@ -8,7 +8,7 @@ export interface IUpdateZone {
     id: string;
     name: string;
     code: string;
-    description: string | undefined;
+    description?: string;
 }
 
 export interface IZone {
@@ -22,10 +22,18 @@ export interface IZone {
     updatedAt: string;
 }
 
+export interface IZoneMeta {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+}
+
 export interface ZoneResponse {
     success: boolean;
     message: string;
     data: IZone[];
+    meta: IZoneMeta;
 }
 
 export interface SingleZoneResponse {
@@ -38,4 +46,11 @@ export interface DeleteZoneResponse {
     success: boolean;
     message: string;
     data: null;
+}
+
+export interface ZoneParams {
+    page?: number;
+    limit?: number;
+    searchTerm?: string;
+    sortOrder?: 'desc' | 'asc';
 }

@@ -2,9 +2,7 @@
 
 import { Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -15,28 +13,44 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/toast';
+
 import {
     useDeleteZone,
     useGetAllZones,
     useUpdateZone,
 } from '@/hooks/zone.hook';
+
 import { IZone } from '@/interface';
 
-const GetAllZones = () => {
-    const { data, isLoading, isError } = useGetAllZones();
+interface GetAllZonesProps {
+    searchTerm: string;
+}
+
+const GetAllZones = ({ searchTerm }: GetAllZonesProps) => {
+    const { data, isLoading, isError } = useGetAllZones({
+        page: 1,
+        searchTerm,
+    });
 
     const { mutate: updateZone, isPending: isUpdating } = useUpdateZone();
+
     const { mutate: deleteZone, isPending: isDeleting } = useDeleteZone();
 
     const [selectedZone, setSelectedZone] = useState<IZone | null>(null);
+
     const [updateOpen, setUpdateOpen] = useState(false);
+
     const [deleteOpen, setDeleteOpen] = useState(false);
 
     const handleUpdate = (zone: IZone) => {
         setSelectedZone(zone);
         setUpdateOpen(true);
     };
+
     const handleDelete = (zone: IZone) => {
         setSelectedZone(zone);
         setDeleteOpen(true);
@@ -58,6 +72,7 @@ const GetAllZones = () => {
                 setDeleteOpen(false);
                 setSelectedZone(null);
             },
+
             onError: (error) => {
                 toast.add({
                     title: 'Delete Failed',
@@ -73,6 +88,7 @@ const GetAllZones = () => {
 
     const handleConfirmUpdate = () => {
         if (!selectedZone) return;
+
         updateZone(
             {
                 id: selectedZone.id,
@@ -89,9 +105,11 @@ const GetAllZones = () => {
                             'The zone has been updated successfully.',
                         type: 'success',
                     });
+
                     setUpdateOpen(false);
                     setSelectedZone(null);
                 },
+
                 onError: (error) => {
                     toast.add({
                         title: 'Update Failed',
@@ -114,6 +132,27 @@ const GetAllZones = () => {
         return <div>Failed to load zones.</div>;
     }
 
+    /*
+     * Search
+     *
+     * Search by:
+     * - Zone name
+     * - Zone code
+     * - Zone description
+     */
+    const search = searchTerm.trim().toLowerCase();
+
+    const filteredZones =
+        data?.data?.filter((zone) => {
+            if (!search) return true;
+
+            return (
+                zone.name.toLowerCase().includes(search) ||
+                zone.code.toLowerCase().includes(search) ||
+                zone.description?.toLowerCase().includes(search)
+            );
+        }) ?? [];
+
     return (
         <>
             <div className="overflow-x-auto rounded-lg border">
@@ -129,55 +168,74 @@ const GetAllZones = () => {
                     </thead>
 
                     <tbody>
-                        {data?.data?.map((zone) => (
-                            <tr key={zone.id} className="border-b">
-                                <td className="px-4 py-3 font-medium">
-                                    {zone.name}
-                                </td>
+                        {filteredZones.length > 0 ? (
+                            filteredZones.map((zone) => (
+                                <tr key={zone.id} className="border-b">
+                                    <td className="px-4 py-3 font-medium">
+                                        {zone.name}
+                                    </td>
 
-                                <td className="px-4 py-3">{zone.code}</td>
+                                    <td className="px-4 py-3">{zone.code}</td>
 
-                                <td className="px-4 py-3">
-                                    {zone.description}
-                                </td>
+                                    <td className="px-4 py-3">
+                                        {zone.description || 'N/A'}
+                                    </td>
 
-                                <td className="px-4 py-3">
-                                    <span
-                                        className={`font-medium ${
-                                            zone.isActive
-                                                ? 'text-green-600'
-                                                : 'text-red-600'
-                                        }`}
-                                    >
-                                        {zone.isActive ? 'Active' : 'Inactive'}
-                                    </span>
-                                </td>
-
-                                <td className="px-4 py-3">
-                                    <div className="flex justify-end gap-2">
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => handleUpdate(zone)}
+                                    <td className="px-4 py-3">
+                                        <span
+                                            className={`font-medium ${
+                                                zone.isActive
+                                                    ? 'text-green-600'
+                                                    : 'text-red-600'
+                                            }`}
                                         >
-                                            <Pencil className="mr-1 size-4" />
-                                            Update
-                                        </Button>
+                                            {zone.isActive
+                                                ? 'Active'
+                                                : 'Inactive'}
+                                        </span>
+                                    </td>
 
-                                        <Button
-                                            type="button"
-                                            variant="destructive"
-                                            size="sm"
-                                            onClick={() => handleDelete(zone)}
-                                        >
-                                            <Trash2 className="mr-1 size-4" />
-                                            Delete
-                                        </Button>
-                                    </div>
+                                    <td className="px-4 py-3">
+                                        <div className="flex justify-end gap-2">
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() =>
+                                                    handleUpdate(zone)
+                                                }
+                                            >
+                                                <Pencil className="mr-1 size-4" />
+                                                Update
+                                            </Button>
+
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() =>
+                                                    handleDelete(zone)
+                                                }
+                                            >
+                                                <Trash2 className="mr-1 size-4" />
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td
+                                    colSpan={5}
+                                    className="px-4 py-8 text-center text-gray-500"
+                                >
+                                    {searchTerm
+                                        ? `No zones found for "${searchTerm}".`
+                                        : 'No zones found.'}
                                 </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>
@@ -207,12 +265,9 @@ const GetAllZones = () => {
 
                     {selectedZone && (
                         <div className="space-y-4">
-                            {' '}
                             <div className="space-y-2">
-                                {' '}
-                                <Label htmlFor="zone-name">
-                                    Zone Name
-                                </Label>{' '}
+                                <Label htmlFor="zone-name">Zone Name</Label>
+
                                 <Input
                                     id="zone-name"
                                     value={selectedZone.name}
@@ -223,13 +278,12 @@ const GetAllZones = () => {
                                         })
                                     }
                                     placeholder="Enter zone name"
-                                />{' '}
-                            </div>{' '}
+                                />
+                            </div>
+
                             <div className="space-y-2">
-                                {' '}
-                                <Label htmlFor="zone-code">
-                                    Zone Code
-                                </Label>{' '}
+                                <Label htmlFor="zone-code">Zone Code</Label>
+
                                 <Input
                                     id="zone-code"
                                     value={selectedZone.code}
@@ -241,16 +295,17 @@ const GetAllZones = () => {
                                     }
                                     placeholder="Enter zone code"
                                     className="uppercase"
-                                />{' '}
-                            </div>{' '}
+                                />
+                            </div>
+
                             <div className="space-y-2">
-                                {' '}
                                 <Label htmlFor="zone-description">
                                     Description
-                                </Label>{' '}
+                                </Label>
+
                                 <Textarea
                                     id="zone-description"
-                                    value={selectedZone.description}
+                                    value={selectedZone.description ?? ''}
                                     onChange={(event) =>
                                         setSelectedZone({
                                             ...selectedZone,
@@ -259,8 +314,8 @@ const GetAllZones = () => {
                                     }
                                     placeholder="Enter zone description"
                                     rows={4}
-                                />{' '}
-                            </div>{' '}
+                                />
+                            </div>
                         </div>
                     )}
 

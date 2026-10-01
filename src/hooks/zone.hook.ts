@@ -1,6 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+    useSuspenseQuery,
+} from '@tanstack/react-query';
 import { createZone, deleteZone, getAllZones, updateZone } from '@/api';
-import { IUpdateZone, ZoneResponse } from '@/interface';
+import { IUpdateZone, ZoneParams, ZoneResponse } from '@/interface';
 
 export function useCreateZone() {
     const queryClient = useQueryClient();
@@ -16,10 +21,17 @@ export function useCreateZone() {
     });
 }
 
-export function useGetAllZones() {
+export function useGetAllZones(params: ZoneParams) {
     return useQuery<ZoneResponse>({
-        queryKey: ['zones'],
-        queryFn: getAllZones,
+        queryKey: ['zones', params],
+        queryFn: () => getAllZones(params),
+    });
+}
+
+export function useSuspenseGetAllZones(params: ZoneParams) {
+    return useSuspenseQuery<ZoneResponse>({
+        queryKey: ['zones', params],
+        queryFn: () => getAllZones(params),
     });
 }
 
