@@ -15,19 +15,19 @@ export const adminRoutes = [
         ],
     },
     {
-        title: 'Appointments',
+        title: 'Schedule & Subscriptions',
         items: [
             {
-                title: 'Appointments',
-                url: `${prefix}/appointments`,
+                title: 'Zones',
+                url: `${prefix}/zones`,
             },
             {
-                title: 'Prescriptions',
-                url: `${prefix}/prescriptions`,
+                title: 'Substations',
+                url: `${prefix}/substations`,
             },
             {
-                title: 'Medical Records',
-                url: `${prefix}/medical-records`,
+                title: 'Feeders',
+                url: `${prefix}/feeders`,
             },
         ],
     },

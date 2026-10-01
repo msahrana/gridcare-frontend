@@ -31,23 +31,20 @@ const LoginForm = () => {
     type UserDefaultValues = z.infer<typeof loginSchema>;
 
     const defaultValues: UserDefaultValues = {
-        email: 'msahrana@gmail.com',
-        password: 'SAYed#@5288%$@',
+        // email: 'msahrana@gmail.com',    //customer
+        // password: 'SAYed#@5288%$@',
 
-        // defaultValues: {
-        //     email: 'tara.mony@srhealthcare.com', //admin
-        //     password: '$2b$12$TaraMonymost7860',
-        // },
+        email: 'sayedrana@srhealthcare.com', //admin
+        password: '$2b$12$sAyEd[Rana]5288',
 
-        // defaultValues: {
-        //     email: 'testertechnician@gmail.com', //technician
-        //     password: 'Tester@technician12345',
-        // },
+        // email: 'tara.mony@srhealthcare.com', //operator
+        // password: '$2b$12$TaraMonymost7860',
 
-        // defaultValues: {
-        //     email: 'drsiyana3@gmail.com', //technician
-        //     password: '5*MCj*Fgj5',
-        // },
+        // email: 'testertechnician@gmail.com', //technician
+        // password: 'Tester@technician12345',
+
+        // email: 'drsiyana3@gmail.com', //technician
+        // password: '5*MCj*Fgj5',
     };
 
     const form = useForm({
