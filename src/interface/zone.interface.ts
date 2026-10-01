@@ -1,8 +1,14 @@
 export interface ICreateZone {
+    name: string;
+    code: string;
+    description?: string;
+}
+
+export interface IZone {
     id: string;
     name: string;
     code: string;
-    description: string;
+    description?: string;
     isActive: boolean;
     deletedAt: string | null;
     createdAt: string;
@@ -11,7 +17,6 @@ export interface ICreateZone {
 
 export interface ZoneResponse {
     success: boolean;
-    statusCode: number;
     message: string;
-    data: ICreateZone[];
+    data: IZone[];
 }
