@@ -51,13 +51,11 @@ const CreateZone = () => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger >
-                <Button className="hover:bg-[#0055B8]">
-                    Create New Zone
-                </Button>
+            <DialogTrigger>
+                <Button className="hover:bg-[#0055B8]">Create New Zone</Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-125">
                 <DialogHeader>
                     <DialogTitle>Create New Zone</DialogTitle>
 
@@ -99,17 +97,13 @@ const CreateZone = () => {
 
                     {/* Description */}
                     <div className="space-y-2">
-                        <Label htmlFor="description">
-                            Description
-                        </Label>
+                        <Label htmlFor="description">Description</Label>
 
                         <Textarea
                             id="description"
                             placeholder="Enter zone description..."
                             value={description}
-                            onChange={(e) =>
-                                setDescription(e.target.value)
-                            }
+                            onChange={(e) => setDescription(e.target.value)}
                             rows={4}
                         />
                     </div>
