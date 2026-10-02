@@ -31,9 +31,12 @@ export interface IZoneMeta {
 
 export interface ZoneResponse {
     success: boolean;
+    statusCode: number;
     message: string;
-    data: IZone[];
-    meta: IZoneMeta;
+    data: {
+        data: IZone[];
+        meta: IZoneMeta;
+    };
 }
 
 export interface SingleZoneResponse {

@@ -18,24 +18,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/toast';
 
-import {
-    useDeleteZone,
-    useGetAllZones,
-    useUpdateZone,
-} from '@/hooks/zone.hook';
+import { useDeleteZone, useUpdateZone } from '@/hooks/zone.hook';
 
 import { IZone } from '@/interface';
 
 interface GetAllZonesProps {
-    searchTerm: string;
+    data: IZone[];
 }
 
-const GetAllZones = ({ searchTerm }: GetAllZonesProps) => {
-    const { data, isLoading, isError } = useGetAllZones({
-        page: 1,
-        searchTerm,
-    });
-
+const GetAllZones = ({ data }: GetAllZonesProps) => {
     const { mutate: updateZone, isPending: isUpdating } = useUpdateZone();
 
     const { mutate: deleteZone, isPending: isDeleting } = useDeleteZone();
@@ -124,35 +115,6 @@ const GetAllZones = ({ searchTerm }: GetAllZonesProps) => {
         );
     };
 
-    if (isLoading) {
-        return <div>Loading zones...</div>;
-    }
-
-    if (isError) {
-        return <div>Failed to load zones.</div>;
-    }
-
-    /*
-     * Search
-     *
-     * Search by:
-     * - Zone name
-     * - Zone code
-     * - Zone description
-     */
-    const search = searchTerm.trim().toLowerCase();
-
-    const filteredZones =
-        data?.data?.filter((zone) => {
-            if (!search) return true;
-
-            return (
-                zone.name.toLowerCase().includes(search) ||
-                zone.code.toLowerCase().includes(search) ||
-                zone.description?.toLowerCase().includes(search)
-            );
-        }) ?? [];
-
     return (
         <>
             <div className="overflow-x-auto rounded-lg border">
@@ -168,8 +130,8 @@ const GetAllZones = ({ searchTerm }: GetAllZonesProps) => {
                     </thead>
 
                     <tbody>
-                        {filteredZones.length > 0 ? (
-                            filteredZones.map((zone) => (
+                        {data.length > 0 ? (
+                            data.map((zone) => (
                                 <tr key={zone.id} className="border-b">
                                     <td className="px-4 py-3 font-medium">
                                         {zone.name}
@@ -230,9 +192,7 @@ const GetAllZones = ({ searchTerm }: GetAllZonesProps) => {
                                     colSpan={5}
                                     className="px-4 py-8 text-center text-gray-500"
                                 >
-                                    {searchTerm
-                                        ? `No zones found for "${searchTerm}".`
-                                        : 'No zones found.'}
+                                    No zones found.
                                 </td>
                             </tr>
                         )}
