@@ -5,3 +5,4 @@ export * from './sidebar.interface';
 export * from './subscription.interface';
 export * from './technician.interface';
 export * from './zone.interface';
+export * from './substation.interface';

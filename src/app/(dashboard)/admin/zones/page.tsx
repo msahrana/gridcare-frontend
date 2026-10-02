@@ -7,15 +7,18 @@ import GetAllZones from '@/components/modules/zone/GetZone';
 import SearchInput from '@/components/shared/SearchInput';
 import TablePagination from '@/components/ui/table-pagination';
 import { useSuspenseGetAllZones } from '@/hooks';
+import useDebounce from '@/hooks/debounce.hook';
 
 const Zones = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchInput, setSearchInput] = useState('');
     const [page, setPage] = useState(1);
+
+    const searchTerm = useDebounce(searchInput, 500);
 
     const params = {
         searchTerm,
         page,
-        limit: 10,
+        limit: 5,
     };
 
     const { data } = useSuspenseGetAllZones(params);
@@ -24,7 +27,7 @@ const Zones = () => {
     const totalPages = data?.data?.meta?.totalPages ?? 0;
 
     const handleSearch = (value: string) => {
-        setSearchTerm(value);
+        setSearchInput(value);
         setPage(1);
     };
 
@@ -35,7 +38,7 @@ const Zones = () => {
 
                 <div className="ml-auto">
                     <SearchInput
-                        value={searchTerm}
+                        value={searchInput}
                         onChange={handleSearch}
                         placeholder="Search by zone or code..."
                     />
