@@ -4,3 +4,4 @@ export * from './substation.hook';
 export * from './technician.hook';
 export * from './use-mobile';
 export * from './zone.hook';
+export * from './feeder.hook';

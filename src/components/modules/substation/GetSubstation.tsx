@@ -118,6 +118,7 @@ const GetSubstation = ({ data }: GetSubstationProps) => {
 
     return (
         <>
+            {/* Data Fetching */}
             <div className="overflow-x-auto rounded-lg border">
                 <table className="w-full">
                     <thead>

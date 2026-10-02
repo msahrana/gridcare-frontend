@@ -1,8 +1,3 @@
-'use client';
-
-import { Pencil, Trash2 } from 'lucide-react';
-import { useState } from 'react';
-
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -15,53 +10,50 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/toast';
+import { useDeleteFeeder, useUpdateFeeder } from '@/hooks';
+import { IFeeder } from '@/interface';
+import { Pencil, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
-import { useDeleteZone, useUpdateZone } from '@/hooks/zone.hook';
-
-import { IZone } from '@/interface';
-
-interface GetAllZonesProps {
-    data: IZone[];
+interface GetAllFeedersProps {
+    data: IFeeder[];
 }
+const GetFeeder = ({ data }: GetAllFeedersProps) => {
+    const { mutate: updateFeeder, isPending: isUpdating } = useUpdateFeeder();
 
-const GetAllZones = ({ data }: GetAllZonesProps) => {
-    const { mutate: updateZone, isPending: isUpdating } = useUpdateZone();
+    const { mutate: deleteFeeder, isPending: isDeleting } = useDeleteFeeder();
 
-    const { mutate: deleteZone, isPending: isDeleting } = useDeleteZone();
-
-    const [selectedZone, setSelectedZone] = useState<IZone | null>(null);
+    const [selectedFeeder, setSelectedFeeder] = useState<IFeeder | null>(null);
 
     const [updateOpen, setUpdateOpen] = useState(false);
-
     const [deleteOpen, setDeleteOpen] = useState(false);
 
-    const handleUpdate = (zone: IZone) => {
-        setSelectedZone(zone);
+    const handleUpdate = (feeder: IFeeder) => {
+        setSelectedFeeder(feeder);
         setUpdateOpen(true);
     };
 
-    const handleDelete = (zone: IZone) => {
-        setSelectedZone(zone);
+    const handleDelete = (feeder: IFeeder) => {
+        setSelectedFeeder(feeder);
         setDeleteOpen(true);
     };
 
     const handleConfirmDelete = () => {
-        if (!selectedZone) return;
+        if (!selectedFeeder) return;
 
-        deleteZone(selectedZone.id, {
+        deleteFeeder(selectedFeeder.id, {
             onSuccess: (res) => {
                 toast.add({
-                    title: 'Zone Deleted',
+                    title: 'Feeder Deleted',
                     description:
                         res.message ||
-                        'The zone has been deleted successfully.',
+                        'The feeder has been deleted successfully.',
                     type: 'success',
                 });
 
                 setDeleteOpen(false);
-                setSelectedZone(null);
+                setSelectedFeeder(null);
             },
 
             onError: (error) => {
@@ -70,7 +62,7 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                     description:
                         error instanceof Error
                             ? error.message
-                            : 'Failed to delete the zone.',
+                            : 'Failed to delete the feeder.',
                     type: 'error',
                 });
             },
@@ -78,27 +70,28 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
     };
 
     const handleConfirmUpdate = () => {
-        if (!selectedZone) return;
+        if (!selectedFeeder) return;
 
-        updateZone(
+        updateFeeder(
             {
-                id: selectedZone.id,
-                name: selectedZone.name,
-                code: selectedZone.code,
-                description: selectedZone.description,
+                id: selectedFeeder.id,
+                name: selectedFeeder.name,
+                code: selectedFeeder.code,
+                substationId: selectedFeeder.substationId,
+                status: selectedFeeder.status,
             },
             {
                 onSuccess: (res) => {
                     toast.add({
-                        title: 'Zone Updated',
+                        title: 'Feeder Updated',
                         description:
                             res.message ||
-                            'The zone has been updated successfully.',
+                            'The feeder has been updated successfully.',
                         type: 'success',
                     });
 
                     setUpdateOpen(false);
-                    setSelectedZone(null);
+                    setSelectedFeeder(null);
                 },
 
                 onError: (error) => {
@@ -107,7 +100,7 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                         description:
                             error instanceof Error
                                 ? error.message
-                                : 'Failed to update the zone.',
+                                : 'Failed to update the feeder.',
                         type: 'error',
                     });
                 },
@@ -123,8 +116,8 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                     <thead>
                         <tr className="border-b bg-gray-100 text-left">
                             <th className="px-4 py-3">Name</th>
-                            <th className="px-4 py-3">Code</th>
-                            <th className="px-4 py-3">Description</th>
+                            <th className="px-4 py-3">Substation Code</th>
+                            <th className="px-4 py-3">Substation Name</th>
                             <th className="px-4 py-3">Status</th>
                             <th className="px-4 py-3 text-right">Actions</th>
                         </tr>
@@ -132,29 +125,30 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
 
                     <tbody>
                         {data.length > 0 ? (
-                            data.map((zone) => (
-                                <tr key={zone.id} className="border-b">
+                            data.map((feeder) => (
+                                <tr key={feeder.id} className="border-b">
                                     <td className="px-4 py-3 font-medium">
-                                        {zone.name}
+                                        {feeder.name}
                                     </td>
 
-                                    <td className="px-4 py-3">{zone.code}</td>
+                                    <td className="px-4 py-3">{feeder.code}</td>
 
                                     <td className="px-4 py-3">
-                                        {zone.description || 'N/A'}
+                                        {feeder.substation.name || 'N/A'}
                                     </td>
 
                                     <td className="px-4 py-3">
                                         <span
-                                            className={`font-medium ${
-                                                zone.isActive
-                                                    ? 'text-green-600'
-                                                    : 'text-red-600'
+                                            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
+                                                feeder.status === 'ACTIVE'
+                                                    ? 'bg-green-100 text-green-700'
+                                                    : feeder.status ===
+                                                        'MAINTENANCE'
+                                                      ? 'bg-yellow-100 text-yellow-700'
+                                                      : 'bg-red-100 text-red-700'
                                             }`}
                                         >
-                                            {zone.isActive
-                                                ? 'Active'
-                                                : 'Inactive'}
+                                            {feeder.status}
                                         </span>
                                     </td>
 
@@ -165,7 +159,7 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() =>
-                                                    handleUpdate(zone)
+                                                    handleUpdate(feeder)
                                                 }
                                             >
                                                 <Pencil className="mr-1 size-4" />
@@ -177,7 +171,7 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                                                 variant="destructive"
                                                 size="sm"
                                                 onClick={() =>
-                                                    handleDelete(zone)
+                                                    handleDelete(feeder)
                                                 }
                                             >
                                                 <Trash2 className="mr-1 size-4" />
@@ -193,7 +187,7 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                                     colSpan={5}
                                     className="px-4 py-8 text-center text-gray-500"
                                 >
-                                    No zones found.
+                                    No feeders found.
                                 </td>
                             </tr>
                         )}
@@ -209,72 +203,71 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                         setUpdateOpen(open);
 
                         if (!open) {
-                            setSelectedZone(null);
+                            setSelectedFeeder(null);
                         }
                     }
                 }}
             >
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Update Zone</DialogTitle>
+                        <DialogTitle>Update Feeder</DialogTitle>
 
                         <DialogDescription>
                             Update the information for{' '}
-                            <strong>{selectedZone?.name}</strong>.
+                            <strong>{selectedFeeder?.name}</strong>.
                         </DialogDescription>
                     </DialogHeader>
 
-                    {selectedZone && (
+                    {selectedFeeder && (
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="zone-name">Zone Name</Label>
+                                <Label htmlFor="feeder-name">Feeder Name</Label>
 
                                 <Input
-                                    id="zone-name"
-                                    value={selectedZone.name}
+                                    id="feeder-name"
+                                    value={selectedFeeder.name}
                                     onChange={(event) =>
-                                        setSelectedZone({
-                                            ...selectedZone,
+                                        setSelectedFeeder({
+                                            ...selectedFeeder,
                                             name: event.target.value,
                                         })
                                     }
-                                    placeholder="Enter zone name"
+                                    placeholder="Enter feeder name"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="zone-code">Zone Code</Label>
+                                <Label htmlFor="feeder-code">Feeder Code</Label>
 
                                 <Input
-                                    id="zone-code"
-                                    value={selectedZone.code}
+                                    id="feeder-code"
+                                    value={selectedFeeder.code}
                                     onChange={(event) =>
-                                        setSelectedZone({
-                                            ...selectedZone,
+                                        setSelectedFeeder({
+                                            ...selectedFeeder,
                                             code: event.target.value.toUpperCase(),
                                         })
                                     }
-                                    placeholder="Enter zone code"
+                                    placeholder="Enter feeder code"
                                     className="uppercase"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="zone-description">
-                                    Description
+                                <Label htmlFor="feeder-substation">
+                                    Substation ID
                                 </Label>
 
-                                <Textarea
-                                    id="zone-description"
-                                    value={selectedZone.description ?? ''}
+                                <Input
+                                    id="feeder-substation"
+                                    value={selectedFeeder.substationId}
                                     onChange={(event) =>
-                                        setSelectedZone({
-                                            ...selectedZone,
-                                            description: event.target.value,
+                                        setSelectedFeeder({
+                                            ...selectedFeeder,
+                                            substationId: event.target.value,
                                         })
                                     }
-                                    placeholder="Enter zone description"
-                                    rows={4}
+                                    placeholder="Enter substation ID"
                                 />
                             </div>
                         </div>
@@ -298,7 +291,7 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                             onClick={handleConfirmUpdate}
                             disabled={isUpdating}
                         >
-                            {isUpdating ? 'Updating...' : 'Update Zone'}
+                            {isUpdating ? 'Updating...' : 'Update Feeder'}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -312,18 +305,18 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                         setDeleteOpen(open);
 
                         if (!open) {
-                            setSelectedZone(null);
+                            setSelectedFeeder(null);
                         }
                     }
                 }}
             >
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Delete Zone</DialogTitle>
+                        <DialogTitle>Delete Feeder</DialogTitle>
 
                         <DialogDescription>
                             Are you sure you want to delete{' '}
-                            <strong>{selectedZone?.name}</strong>? This action
+                            <strong>{selectedFeeder?.name}</strong>? This action
                             cannot be undone.
                         </DialogDescription>
                     </DialogHeader>
@@ -347,7 +340,7 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
                             onClick={handleConfirmDelete}
                             disabled={isDeleting}
                         >
-                            {isDeleting ? 'Deleting...' : 'Delete Zone'}
+                            {isDeleting ? 'Deleting...' : 'Delete Feeder'}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -356,4 +349,4 @@ const GetAllZones = ({ data }: GetAllZonesProps) => {
     );
 };
 
-export default GetAllZones;
+export default GetFeeder;

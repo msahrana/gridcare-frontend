@@ -22,7 +22,6 @@ const Substations = () => {
     };
 
     const { data } = useSuspenseGetAllSubstations(params);
-    console.log(data.data)
 
     const substations = data?.data ?? [];
     const totalPages = data?.meta?.totalPages ?? 0;
@@ -35,7 +34,7 @@ const Substations = () => {
     return (
         <div className="p-6">
             <div className="mb-6 flex items-center gap-4">
-                <h1 className="text-2xl font-bold">All Substations</h1>
+                <h1 className="text-2xl font-bold">All Substations:</h1>
 
                 <div className="ml-auto">
                     <SearchInput
@@ -48,7 +47,9 @@ const Substations = () => {
                 <CreateSubstation />
             </div>
 
-            <GetAllSubstations data={substations} />
+            <div>
+                <GetAllSubstations data={substations} />
+            </div>
 
             <div className="my-5">
                 <TablePagination

@@ -34,7 +34,7 @@ const Zones = () => {
     return (
         <div className="p-6">
             <div className="mb-6 flex items-center gap-4">
-                <h1 className="text-2xl font-bold">All Zones</h1>
+                <h1 className="text-2xl font-bold">All Zones:</h1>
 
                 <div className="ml-auto">
                     <SearchInput
@@ -47,7 +47,9 @@ const Zones = () => {
                 <CreateZone />
             </div>
 
-            <GetAllZones data={zones} />
+            <div>
+                <GetAllZones data={zones} />
+            </div>
 
             <div className="my-5">
                 <TablePagination

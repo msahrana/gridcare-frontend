@@ -5,3 +5,5 @@ export type UserStatus = 'ACTIVE' | 'BLOCKED' | 'DELETED';
 export type TechnicianStatus = 'AVAILABLE' | 'BUSY' | 'OFFLINE';
 
 export type TechnicianVerificationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+export type FeederStatus = 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE';
