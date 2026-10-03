@@ -1,15 +1,20 @@
-import { ICreateZone, SingleZoneResponse, ZoneParams } from '@/interface';
+import {
+    ICreateZone,
+    SingleZoneResponse,
+    ZoneParams,
+    ZoneResponse,
+} from '@/interface';
 import apiClient from '@/lib/apiClient';
 
 export function createZone(payload: ICreateZone) {
-    return apiClient('/zones', {
+    return apiClient<SingleZoneResponse>('/zones', {
         method: 'POST',
         body: payload,
     });
 }
 
 export function getAllZones(params: ZoneParams) {
-    return apiClient('/zones', {
+    return apiClient<ZoneResponse>('/zones', {
         params,
     });
 }

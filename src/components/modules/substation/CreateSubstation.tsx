@@ -35,7 +35,7 @@ const CreateSubstation = () => {
     const { data: zoneResponse, isFetching: isZonesFetching } =
         useSuspenseGetAllZones({
             page: 1,
-            limit: 100,
+            limit: 10,
         });
 
     const zones = (zoneResponse?.data?.data ?? []).filter(

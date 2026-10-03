@@ -29,6 +29,10 @@ export const adminRoutes = [
                 title: 'Feeders',
                 url: `${prefix}/feeders`,
             },
+            {
+                title: 'Areas',
+                url: `${prefix}/areas`,
+            },
         ],
     },
     {

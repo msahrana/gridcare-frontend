@@ -36,7 +36,7 @@ const CreateFeeder = () => {
     const { data: substations, isFetching: isSubstationsFetching } =
         useSuspenseGetAllSubstations({
             page: 1,
-            limit: 100,
+            limit: 10,
         });
 
     // Only active substations can have feeders

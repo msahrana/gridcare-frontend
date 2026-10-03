@@ -1,4 +1,5 @@
 export * from './api.interface';
+export * from './area.interface';
 export * from './auth.interface';
 export * from './feeder.interface';
 export * from './schedule.interface';

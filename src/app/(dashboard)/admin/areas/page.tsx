@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useSuspenseGetAllAreas } from '@/hooks';
 import useDebounce from '@/hooks/debounce.hook';
-import { useSuspenseGetAllFeeders } from '@/hooks/feeder.hook';
-import GetFeeder from '@/components/modules/feeder/GetFeeder';
 import SearchInput from '@/components/shared/SearchInput';
-import CreateFeeder from '@/components/modules/feeder/CreateFeeder';
+import CreateArea from '@/components/modules/area/CreateArea';
+import GetArea from '@/components/modules/area/GetArea';
 import TablePagination from '@/components/ui/table-pagination';
 
-const Feeders = () => {
+const Areas = () => {
     const [searchInput, setSearchInput] = useState('');
     const [page, setPage] = useState(1);
 
@@ -20,10 +20,10 @@ const Feeders = () => {
         limit: 5,
     };
 
-    const { data } = useSuspenseGetAllFeeders(params);
+    const { data } = useSuspenseGetAllAreas(params);
 
-    const feeders = data?.data?.data ?? [];
-    const totalPages = data?.data?.meta?.totalPages ?? 0;
+    const areas = data?.data ?? [];
+    const totalPages = data?.meta?.totalPages ?? 0;
 
     const handleSearch = (value: string) => {
         setSearchInput(value);
@@ -43,11 +43,11 @@ const Feeders = () => {
                     />
                 </div>
 
-                <CreateFeeder />
+                <CreateArea />
             </div>
 
             <div>
-                <GetFeeder data={feeders} />
+                <GetArea data={areas} />
             </div>
 
             <div className="my-5">
@@ -61,4 +61,4 @@ const Feeders = () => {
     );
 };
 
-export default Feeders;
+export default Areas;

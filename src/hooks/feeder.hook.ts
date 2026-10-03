@@ -60,6 +60,7 @@ export function useDeleteFeeder() {
 
     return useMutation({
         mutationFn: (id: string) => deleteFeeder(id),
+        
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ['feeders'],

@@ -1,3 +1,4 @@
+export * from './area.api'
 export * from './auth.api';
 export * from './feeder.api';
 export * from './substation.api';

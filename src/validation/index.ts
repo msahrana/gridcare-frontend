@@ -1,3 +1,4 @@
+export * from './area.validation';
 export * from './auth.validation';
 export * from './feeder.validation';
 export * from './substation.validation';

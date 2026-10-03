@@ -1,4 +1,10 @@
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/toast';
+import { useDeleteArea, useUpdateArea } from '@/hooks';
+import { IArea } from '@/interface';
+import { Pencil, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+
 import {
     Dialog,
     DialogClose,
@@ -8,42 +14,37 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from '@/components/ui/toast';
-import { useDeleteFeeder, useUpdateFeeder } from '@/hooks';
-import { IFeeder } from '@/interface';
-import { Pencil, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { Input } from '@/components/ui/input';
 
-interface GetAllFeedersProps {
-    data: IFeeder[];
+interface GetAllAreasProps {
+    data: IArea[];
 }
 
-const GetFeeder = ({ data }: GetAllFeedersProps) => {
-    const { mutate: updateFeeder, isPending: isUpdating } = useUpdateFeeder();
+const GetArea = ({ data }: GetAllAreasProps) => {
+    const { mutate: updateArea, isPending: isUpdating } = useUpdateArea();
 
-    const { mutate: deleteFeeder, isPending: isDeleting } = useDeleteFeeder();
+    const { mutate: deleteArea, isPending: isDeleting } = useDeleteArea();
 
-    const [selectedFeeder, setSelectedFeeder] = useState<IFeeder | null>(null);
+    const [selectedArea, setSelectedArea] = useState<IArea | null>(null);
 
     const [updateOpen, setUpdateOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
 
-    const handleUpdate = (feeder: IFeeder) => {
-        setSelectedFeeder(feeder);
+    const handleUpdate = (area: IArea) => {
+        setSelectedArea(area);
         setUpdateOpen(true);
     };
 
-    const handleDelete = (feeder: IFeeder) => {
-        setSelectedFeeder(feeder);
+    const handleDelete = (area: IArea) => {
+        setSelectedArea(area);
         setDeleteOpen(true);
     };
 
     const handleConfirmDelete = () => {
-        if (!selectedFeeder) return;
+        if (!selectedArea) return;
 
-        deleteFeeder(selectedFeeder.id, {
+        deleteArea(selectedArea.id, {
             onSuccess: (res) => {
                 toast.add({
                     title: 'Feeder Deleted',
@@ -54,7 +55,7 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                 });
 
                 setDeleteOpen(false);
-                setSelectedFeeder(null);
+                setSelectedArea(null);
             },
 
             onError: (error) => {
@@ -71,15 +72,20 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
     };
 
     const handleConfirmUpdate = () => {
-        if (!selectedFeeder) return;
+        if (!selectedArea) return;
 
-        updateFeeder(
+        updateArea(
             {
-                id: selectedFeeder.id,
-                name: selectedFeeder.name,
-                code: selectedFeeder.code,
-                substationId: selectedFeeder.substationId,
-                status: selectedFeeder.status,
+                id: selectedArea.id,
+                name: selectedArea.name,
+                code: selectedArea.code,
+                zoneId: selectedArea.zoneId,
+                substationId: selectedArea.substationId,
+                feederId: selectedArea.feederId,
+                address: selectedArea.address,
+                latitude: selectedArea.latitude,
+                longitude: selectedArea.longitude,
+                isActive: selectedArea.isActive,
             },
             {
                 onSuccess: (res) => {
@@ -92,7 +98,7 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                     });
 
                     setUpdateOpen(false);
-                    setSelectedFeeder(null);
+                    setSelectedArea(null);
                 },
 
                 onError: (error) => {
@@ -116,9 +122,10 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                 <table className="w-full">
                     <thead>
                         <tr className="border-b bg-gray-100 text-left">
-                            <th className="px-4 py-3">Name</th>
-                            <th className="px-4 py-3">Substation Code</th>
+                            <th className="px-4 py-3">Area Name</th>
+                            <th className="px-4 py-3">Area Code</th>
                             <th className="px-4 py-3">Substation Name</th>
+                            <th className="px-4 py-3">Zone Name</th>
                             <th className="px-4 py-3">Status</th>
                             <th className="px-4 py-3 text-right">Actions</th>
                         </tr>
@@ -126,30 +133,33 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
 
                     <tbody>
                         {data.length > 0 ? (
-                            data.map((feeder) => (
-                                <tr key={feeder.id} className="border-b">
+                            data.map((area) => (
+                                <tr key={area.id} className="border-b">
                                     <td className="px-4 py-3 font-medium">
-                                        {feeder.name}
+                                        {area.name}
                                     </td>
 
-                                    <td className="px-4 py-3">{feeder.code}</td>
+                                    <td className="px-4 py-3">{area.code}</td>
 
                                     <td className="px-4 py-3">
-                                        {feeder.substation.name || 'N/A'}
+                                        {area.substation.name || 'N/A'}
+                                    </td>
+
+                                    <td className="px-4 py-3">
+                                        {area.zone.name || 'N/A'}
                                     </td>
 
                                     <td className="px-4 py-3">
                                         <span
                                             className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                                                feeder.status === 'ACTIVE'
+                                                area.isActive
                                                     ? 'bg-green-100 text-green-700'
-                                                    : feeder.status ===
-                                                        'MAINTENANCE'
-                                                      ? 'bg-yellow-100 text-yellow-700'
-                                                      : 'bg-red-100 text-red-700'
+                                                    : 'bg-red-100 text-red-700'
                                             }`}
                                         >
-                                            {feeder.status}
+                                            {area.isActive
+                                                ? 'ACTIVE'
+                                                : 'INACTIVE'}
                                         </span>
                                     </td>
 
@@ -160,7 +170,7 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() =>
-                                                    handleUpdate(feeder)
+                                                    handleUpdate(area)
                                                 }
                                             >
                                                 <Pencil className="mr-1 size-4" />
@@ -172,7 +182,7 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                                                 variant="destructive"
                                                 size="sm"
                                                 onClick={() =>
-                                                    handleDelete(feeder)
+                                                    handleDelete(area)
                                                 }
                                             >
                                                 <Trash2 className="mr-1 size-4" />
@@ -204,7 +214,7 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                         setUpdateOpen(open);
 
                         if (!open) {
-                            setSelectedFeeder(null);
+                            setSelectedArea(null);
                         }
                     }
                 }}
@@ -215,37 +225,37 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
 
                         <DialogDescription>
                             Update the information for{' '}
-                            <strong>{selectedFeeder?.name}</strong>.
+                            <strong>{selectedArea?.name}</strong>.
                         </DialogDescription>
                     </DialogHeader>
 
-                    {selectedFeeder && (
+                    {selectedArea && (
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="feeder-name">Feeder Name</Label>
+                                <Label htmlFor="area-name">Feeder Name</Label>
 
                                 <Input
-                                    id="feeder-name"
-                                    value={selectedFeeder.name}
+                                    id="area-name"
+                                    value={selectedArea.name}
                                     onChange={(event) =>
-                                        setSelectedFeeder({
-                                            ...selectedFeeder,
+                                        setSelectedArea({
+                                            ...selectedArea,
                                             name: event.target.value,
                                         })
                                     }
-                                    placeholder="Enter feeder name"
+                                    placeholder="Enter area name"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="feeder-code">Feeder Code</Label>
+                                <Label htmlFor="feeder-code">Area Code</Label>
 
                                 <Input
-                                    id="feeder-code"
-                                    value={selectedFeeder.code}
+                                    id="area-code"
+                                    value={selectedArea.code}
                                     onChange={(event) =>
-                                        setSelectedFeeder({
-                                            ...selectedFeeder,
+                                        setSelectedArea({
+                                            ...selectedArea,
                                             code: event.target.value.toUpperCase(),
                                         })
                                     }
@@ -260,11 +270,11 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                                 </Label>
 
                                 <Input
-                                    id="feeder-substation"
-                                    value={selectedFeeder.substationId}
+                                    id="area-substation"
+                                    value={selectedArea.substationId}
                                     onChange={(event) =>
-                                        setSelectedFeeder({
-                                            ...selectedFeeder,
+                                        setSelectedArea({
+                                            ...selectedArea,
                                             substationId: event.target.value,
                                         })
                                     }
@@ -292,7 +302,7 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                             onClick={handleConfirmUpdate}
                             disabled={isUpdating}
                         >
-                            {isUpdating ? 'Updating...' : 'Update Feeder'}
+                            {isUpdating ? 'Updating...' : 'Update Area'}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -306,18 +316,18 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                         setDeleteOpen(open);
 
                         if (!open) {
-                            setSelectedFeeder(null);
+                            setSelectedArea(null);
                         }
                     }
                 }}
             >
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Delete Feeder</DialogTitle>
+                        <DialogTitle>Delete Area</DialogTitle>
 
                         <DialogDescription>
                             Are you sure you want to delete{' '}
-                            <strong>{selectedFeeder?.name}</strong>? This action
+                            <strong>{selectedArea?.name}</strong>? This action
                             cannot be undone.
                         </DialogDescription>
                     </DialogHeader>
@@ -341,7 +351,7 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
                             onClick={handleConfirmDelete}
                             disabled={isDeleting}
                         >
-                            {isDeleting ? 'Deleting...' : 'Delete Feeder'}
+                            {isDeleting ? 'Deleting...' : 'Delete Area'}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -350,4 +360,4 @@ const GetFeeder = ({ data }: GetAllFeedersProps) => {
     );
 };
 
-export default GetFeeder;
+export default GetArea;

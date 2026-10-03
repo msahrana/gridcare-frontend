@@ -24,6 +24,7 @@ export interface IFeeder {
     deletedAt: string | null;
     createdAt: string;
     updatedAt: string;
+
     substation: {
         id: string;
         name: string;

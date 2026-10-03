@@ -1,4 +1,10 @@
-import { FeederParams, ICreateFeeder, SingleFeederResponse } from '@/interface';
+import {
+    FeederParams,
+    ICreateFeeder,
+    IFeederResponse,
+    IUpdateFeeder,
+    SingleFeederResponse,
+} from '@/interface';
 import apiClient from '@/lib/apiClient';
 
 export function createFeeder(payload: ICreateFeeder) {
@@ -9,10 +15,10 @@ export function createFeeder(payload: ICreateFeeder) {
 }
 
 export function getAllFeeders(params: FeederParams) {
-    return apiClient('/feeders', { params });
+    return apiClient<IFeederResponse>('/feeders', { params });
 }
 
-export function updateFeeder(id: string, payload: Omit<ICreateFeeder, 'id'>) {
+export function updateFeeder(id: string, payload: Omit<IUpdateFeeder, 'id'>) {
     return apiClient<SingleFeederResponse>(`/feeders/${id}`, {
         method: 'PATCH',
         body: payload,
