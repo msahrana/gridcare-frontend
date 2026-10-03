@@ -33,6 +33,10 @@ export const adminRoutes = [
                 title: 'Areas',
                 url: `${prefix}/areas`,
             },
+            {
+                title: 'Outages',
+                url: `${prefix}/outages`,
+            },
         ],
     },
     {

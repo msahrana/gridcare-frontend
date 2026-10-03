@@ -1,29 +1,32 @@
 'use client';
 
 import { useState } from 'react';
-import { useSuspenseGetAllAreas } from '@/hooks';
+
+import { useSuspenseGetAllOutages } from '@/hooks';
 import useDebounce from '@/hooks/debounce.hook';
+
 import SearchInput from '@/components/shared/SearchInput';
-import CreateArea from '@/components/modules/area/CreateArea';
-import GetArea from '@/components/modules/area/GetArea';
+import CreateOutage from '@/components/modules/outage/CreateOutage';
+import GetOutage from '@/components/modules/outage/GetOutage';
 import TablePagination from '@/components/ui/table-pagination';
 
-const Areas = () => {
+const Outages = () => {
     const [searchInput, setSearchInput] = useState('');
     const [page, setPage] = useState(1);
 
-    const searchTerm = useDebounce(searchInput, 500);
+    const search = useDebounce(searchInput, 500);
 
     const params = {
-        searchTerm,
+        search,
         page,
         limit: 5,
     };
 
-    const { data } = useSuspenseGetAllAreas(params);
+    const { data } = useSuspenseGetAllOutages(params);
 
-    const areas = data?.data ?? [];
-    const totalPages = data?.meta?.totalPages ?? 0;
+    const outages = data?.data?.data ?? [];
+
+    const totalPages = data?.data?.meta?.totalPage ?? 0;
 
     const handleSearch = (value: string) => {
         setSearchInput(value);
@@ -33,21 +36,21 @@ const Areas = () => {
     return (
         <div className="p-6">
             <div className="mb-6 flex items-center gap-4">
-                <h1 className="text-2xl font-bold">All Areas:</h1>
+                <h1 className="text-2xl font-bold">All Outages:</h1>
 
                 <div className="ml-auto">
                     <SearchInput
                         value={searchInput}
                         onChange={handleSearch}
-                        placeholder="Search by substation or code..."
+                        placeholder="Search by title, area or code..."
                     />
                 </div>
 
-                <CreateArea />
+                <CreateOutage />
             </div>
 
             <div>
-                <GetArea data={areas} />
+                <GetOutage data={outages} />
             </div>
 
             <div className="my-5">
@@ -61,4 +64,4 @@ const Areas = () => {
     );
 };
 
-export default Areas;
+export default Outages;

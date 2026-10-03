@@ -7,3 +7,25 @@ export type TechnicianStatus = 'AVAILABLE' | 'BUSY' | 'OFFLINE';
 export type TechnicianVerificationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
 export type FeederStatus = 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE';
+
+export type OutageType = 'PLANNED' | 'UNEXPECTED';
+
+export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+
+export type AuthProvider = 'GOOGLE' | 'CREDENTIAL';
+
+export type OutageStatus =
+    | 'REPORTED'
+    | 'VERIFIED'
+    | 'ASSIGNED'
+    | 'IN_PROGRESS'
+    | 'RESTORED'
+    | 'CLOSED'
+    | 'CANCELLED';
+
+export type AssignmentStatus =
+    | 'ASSIGNED'
+    | 'ACCEPTED'
+    | 'IN_PROGRESS'
+    | 'COMPLETED'
+    | 'CANCELLED';

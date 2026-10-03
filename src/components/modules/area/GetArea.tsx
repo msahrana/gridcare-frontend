@@ -47,10 +47,10 @@ const GetArea = ({ data }: GetAllAreasProps) => {
         deleteArea(selectedArea.id, {
             onSuccess: (res) => {
                 toast.add({
-                    title: 'Feeder Deleted',
+                    title: 'Area Deleted',
                     description:
                         res.message ||
-                        'The feeder has been deleted successfully.',
+                        'The area has been deleted successfully.',
                     type: 'success',
                 });
 
@@ -64,7 +64,7 @@ const GetArea = ({ data }: GetAllAreasProps) => {
                     description:
                         error instanceof Error
                             ? error.message
-                            : 'Failed to delete the feeder.',
+                            : 'Failed to delete the area.',
                     type: 'error',
                 });
             },
@@ -90,10 +90,10 @@ const GetArea = ({ data }: GetAllAreasProps) => {
             {
                 onSuccess: (res) => {
                     toast.add({
-                        title: 'Feeder Updated',
+                        title: 'Area Updated',
                         description:
                             res.message ||
-                            'The feeder has been updated successfully.',
+                            'The areas has been updated successfully.',
                         type: 'success',
                     });
 
@@ -107,7 +107,7 @@ const GetArea = ({ data }: GetAllAreasProps) => {
                         description:
                             error instanceof Error
                                 ? error.message
-                                : 'Failed to update the feeder.',
+                                : 'Failed to update the area.',
                         type: 'error',
                     });
                 },
@@ -198,7 +198,7 @@ const GetArea = ({ data }: GetAllAreasProps) => {
                                     colSpan={5}
                                     className="px-4 py-8 text-center text-gray-500"
                                 >
-                                    No feeders found.
+                                    No areas found.
                                 </td>
                             </tr>
                         )}
@@ -221,7 +221,7 @@ const GetArea = ({ data }: GetAllAreasProps) => {
             >
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Update Feeder</DialogTitle>
+                        <DialogTitle>Update Area</DialogTitle>
 
                         <DialogDescription>
                             Update the information for{' '}
@@ -232,7 +232,7 @@ const GetArea = ({ data }: GetAllAreasProps) => {
                     {selectedArea && (
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="area-name">Feeder Name</Label>
+                                <Label htmlFor="area-name">Area Name</Label>
 
                                 <Input
                                     id="area-name"
@@ -248,7 +248,7 @@ const GetArea = ({ data }: GetAllAreasProps) => {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="feeder-code">Area Code</Label>
+                                <Label htmlFor="area-code">Area Code</Label>
 
                                 <Input
                                     id="area-code"
@@ -259,13 +259,13 @@ const GetArea = ({ data }: GetAllAreasProps) => {
                                             code: event.target.value.toUpperCase(),
                                         })
                                     }
-                                    placeholder="Enter feeder code"
+                                    placeholder="Enter area code"
                                     className="uppercase"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="feeder-substation">
+                                <Label htmlFor="area-substation">
                                     Substation ID
                                 </Label>
 
