@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 
+import { useSuspenseAllLoadSheddingSchedules } from '@/hooks';
 import useDebounce from '@/hooks/debounce.hook';
-import { useSuspenseGetAllOutageAssignments } from '@/hooks';
 
 import SearchInput from '@/components/shared/SearchInput';
-
 import TablePagination from '@/components/ui/table-pagination';
-import CreateOutageAssignments from '@/components/modules/outageAssignment/CreateOutageAssignments';
-import GetOutageAssignments from '@/components/modules/outageAssignment/GetOutageAssignments ';
 
-const OutageAssignments = () => {
+import CreateLoadSheddingSchedule from '@/components/modules/load-shedding-schedule/CreateLoadSheddingSchedule';
+import GetLoadSheddingSchedule from '@/components/modules/load-shedding-schedule/GetLoadSheddingSchedule';
+
+const LoadSheddingSchedules = () => {
     const [searchInput, setSearchInput] = useState('');
     const [page, setPage] = useState(1);
 
@@ -20,12 +20,14 @@ const OutageAssignments = () => {
     const params = {
         searchTerm,
         page,
-        limit: 2,
+        limit: 7,
     };
 
-    const { data } = useSuspenseGetAllOutageAssignments(params);
+    const { data } = useSuspenseAllLoadSheddingSchedules(params);
 
-    const outageAssignments = data?.data?.data ?? [];
+    console.log(data);
+
+    const loadSheddingSchedules = data?.data?.data ?? [];
     const totalPages = data?.data?.meta?.totalPages ?? 0;
 
     const handleSearch = (value: string) => {
@@ -37,21 +39,29 @@ const OutageAssignments = () => {
         <div className="p-6">
             {/* Header */}
             <div className="mb-6 flex items-center gap-4">
-                <h1 className="text-2xl font-bold">All Outage Assignments</h1>
+                <div>
+                    <h1 className="text-2xl font-bold">
+                        All Load Shedding Schedules
+                    </h1>
+
+                    <p className="mt-1 text-sm text-muted-foreground">
+                        Manage load shedding schedules.
+                    </p>
+                </div>
 
                 <div className="ml-auto">
                     <SearchInput
                         value={searchInput}
                         onChange={handleSearch}
-                        placeholder="Search by title, technician or assigned by..."
+                        placeholder="Search by title or description..."
                     />
                 </div>
 
-                <CreateOutageAssignments />
+                <CreateLoadSheddingSchedule />
             </div>
 
-            {/* Assignment List */}
-            <GetOutageAssignments data={outageAssignments} />
+            {/* Schedule List */}
+            <GetLoadSheddingSchedule data={loadSheddingSchedules} />
 
             {/* Pagination */}
             {totalPages > 0 && (
@@ -67,4 +77,4 @@ const OutageAssignments = () => {
     );
 };
 
-export default OutageAssignments;
+export default LoadSheddingSchedules;

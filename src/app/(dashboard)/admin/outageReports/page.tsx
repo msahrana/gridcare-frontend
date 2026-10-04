@@ -21,7 +21,6 @@ const OutageReports = () => {
     };
 
     const { data } = useSuspenseGetAllOutageReports(params);
-    console.log(data);
 
     const outageReports = data?.data?.data ?? [];
 

@@ -40,3 +40,10 @@ export type OutageAssignmentStatus =
     | 'IN_PROGRESS'
     | 'COMPLETED'
     | 'CANCELLED';
+
+export type ScheduleStatus =
+    | 'DRAFT'
+    | 'PUBLISHED'
+    | 'ACTIVE'
+    | 'COMPLETED'
+    | 'CANCELLED';

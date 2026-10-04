@@ -1,6 +1,7 @@
 export * from './area.api';
 export * from './auth.api';
 export * from './feeder.api';
+export * from './load-shedding-schedule.api';
 export * from './outage.api';
 export * from './outageAssignment.api';
 export * from './substation.api';

@@ -2,6 +2,7 @@ export * from './api.interface';
 export * from './area.interface';
 export * from './auth.interface';
 export * from './feeder.interface';
+export * from './load-shedding-schedule.interface';
 export * from './outage.interface';
 export * from './outageAssignment.interface';
 export * from './outageReport.interface';

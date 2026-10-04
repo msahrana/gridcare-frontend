@@ -42,6 +42,10 @@ export const adminRoutes = [
                 title: 'Outage Assignments',
                 url: `${prefix}/outageAssignments`,
             },
+            {
+                title: 'Load Shedding Schedules',
+                url: `${prefix}/load-shedding-schedules`,
+            },
         ],
     },
     {
@@ -50,10 +54,6 @@ export const adminRoutes = [
             {
                 title: 'Outage Reports',
                 url: `${prefix}/outageReports`,
-            },
-            {
-                title: 'Payments',
-                url: `${prefix}/payments`,
             },
             {
                 title: 'Analytics',

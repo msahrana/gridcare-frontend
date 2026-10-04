@@ -2,6 +2,7 @@ export * from './area.hook';
 export * from './auth.hook';
 export * from './debounce.hook';
 export * from './feeder.hook';
+export * from './load-shedding-schedule.hook';
 export * from './outage.hook';
 export * from './outageAssignment.hook';
 export * from './substation.hook';
