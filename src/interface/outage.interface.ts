@@ -40,18 +40,6 @@ export interface IOutageArea {
     updatedAt: string;
 }
 
-export interface IOutageReport {
-    id: string;
-    outageId: string;
-    reporterId: string;
-    areaId: string;
-    description: string;
-    latitude: number | null;
-    longitude: number | null;
-    createdAt: string;
-    updatedAt: string;
-}
-
 export interface ITechnicianAdditionalFile {
     url: string;
     publicId: string;
