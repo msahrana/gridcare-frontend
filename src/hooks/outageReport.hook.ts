@@ -4,17 +4,18 @@ import {
     useQueryClient,
     useSuspenseQuery,
 } from '@tanstack/react-query';
-import {
-    createOutageReport,
-    deleteOutageReport,
-    getAllOutageReports,
-    updateOutageReport,
-} from '@/api/outageReport.api';
+
 import {
     IOutageReportResponse,
     IUpdateOutageReport,
     OutageReportsParams,
 } from '@/interface';
+import {
+    createOutageReport,
+    deleteOutageReport,
+    getAllOutageReports,
+    updateOutageReport,
+} from '@/api';
 
 export function useCreateOutageReport() {
     const queryClient = useQueryClient();

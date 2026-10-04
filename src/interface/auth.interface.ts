@@ -1,4 +1,4 @@
-import { UserRole, UserStatus } from "@/types";
+import { UserRole, UserStatus } from '@/types';
 
 export interface ICredentialRegister {
     name: string;
@@ -32,4 +32,32 @@ export interface User {
     deletedAt: null | string;
     createdAt: string;
     updatedAt: string;
+}
+
+// export interface UsersParams {
+//     page?: number;
+//     limit?: number;
+//     searchTerm?: string;
+// }
+
+// export interface IUserListResponse {
+//     success: boolean;
+//     statusCode: number;
+//     message: string;
+//     data: {
+//         data: User[];
+//         meta: {
+//             page: number;
+//             limit: number;
+//             total: number;
+//             totalPages: number;
+//         };
+//     };
+// }
+
+export interface IAllUsersResponse {
+    success: boolean;
+    statusCode: number;
+    message: string;
+    data: User[];
 }

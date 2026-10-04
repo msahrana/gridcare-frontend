@@ -4,8 +4,9 @@ import CreateOutageReport from '@/components/modules/outageReport/CreateOutageRe
 import GetOutageReport from '@/components/modules/outageReport/GetOutageReport';
 import SearchInput from '@/components/shared/SearchInput';
 import TablePagination from '@/components/ui/table-pagination';
+import { useSuspenseGetAllOutageReports } from '@/hooks';
 import useDebounce from '@/hooks/debounce.hook';
-import { useSuspenseGetAllOutageReports } from '@/hooks/outageReport.hook';
+
 import { useState } from 'react';
 
 const OutageReports = () => {
@@ -30,6 +31,7 @@ const OutageReports = () => {
         setSearchInput(value);
         setPage(1);
     };
+
     return (
         <div className="p-6">
             <div className="mb-6 flex items-center gap-4">

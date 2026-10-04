@@ -1,7 +1,8 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import {
+    getAllUsers,
     getMe,
     googleOAuth,
     userLogin,
@@ -9,6 +10,7 @@ import {
     userRegistration,
     verifyAccount,
 } from '@/api';
+
 
 export function useRegister() {
     return useMutation({
@@ -45,5 +47,12 @@ export function useGetMe() {
         queryKey: ['user'],
         queryFn: getMe,
         retry: false,
+    });
+}
+
+export function useSuspenseGetAllUsers() {
+    return useSuspenseQuery({
+        queryKey: ['users'],
+        queryFn: getAllUsers,
     });
 }

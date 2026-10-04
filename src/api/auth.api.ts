@@ -1,4 +1,5 @@
 import {
+    IAllUsersResponse,
     ICredentialLogin,
     ICredentialRegister,
     ICredentialVerifyOTP,
@@ -42,4 +43,8 @@ export function googleOAuth(payload: { idToken: string }) {
         method: 'POST',
         body: payload,
     });
+}
+
+export function getAllUsers() {
+    return apiClient<IAllUsersResponse>('/auth/all-users');
 }

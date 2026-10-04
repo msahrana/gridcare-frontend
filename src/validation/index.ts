@@ -2,6 +2,7 @@ export * from './area.validation';
 export * from './auth.validation';
 export * from './feeder.validation';
 export * from './load-shedding-schedule.validation';
+export * from './notification.validation';
 export * from './outage.validation';
 export * from './outageAssignment.valodation';
 export * from './outageReport.validation';

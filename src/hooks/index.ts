@@ -3,8 +3,10 @@ export * from './auth.hook';
 export * from './debounce.hook';
 export * from './feeder.hook';
 export * from './load-shedding-schedule.hook';
+export * from './notification.hook';
 export * from './outage.hook';
 export * from './outageAssignment.hook';
+export * from './outageReport.hook'
 export * from './substation.hook';
 export * from './technician.hook';
 export * from './use-mobile';

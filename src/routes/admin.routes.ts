@@ -46,6 +46,10 @@ export const adminRoutes = [
                 title: 'Load Shedding Schedules',
                 url: `${prefix}/load-shedding-schedules`,
             },
+            {
+                title: 'Notifications',
+                url: `${prefix}/notifications`,
+            },
         ],
     },
     {
