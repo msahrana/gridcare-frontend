@@ -1,6 +1,6 @@
 import {
     ICreateOutage,
-    IOutagesResponse,
+    IOutageResponse,
     IUpdateOutage,
     OutagesParams,
     SingleOutageResponse,
@@ -15,7 +15,7 @@ export function createOutage(payload: ICreateOutage) {
 }
 
 export function getAllOutages(params: OutagesParams) {
-    return apiClient<IOutagesResponse>('/outages', { params });
+    return apiClient<IOutageResponse>('/outages', { params });
 }
 
 export function updateOutage(id: string, payload: Omit<IUpdateOutage, 'id'>) {

@@ -1,5 +1,4 @@
 import {
-    AssignmentStatus,
     AuthProvider,
     OutageStatus,
     OutageType,
@@ -105,23 +104,6 @@ export interface IAssignedBy {
     deletedAt: string | null;
 }
 
-export interface IOutageAssignment {
-    id: string;
-    outageId: string;
-    technicianId: string;
-    assignedById: string;
-
-    status: AssignmentStatus;
-
-    assignedAt: string;
-    acceptedAt: string | null;
-    startedAt: string | null;
-    completedAt: string | null;
-
-    technician: IOutageTechnician;
-    assignedBy: IAssignedBy;
-}
-
 export interface IOutage {
     id: string;
     areaId: string;
@@ -141,8 +123,8 @@ export interface IOutage {
     deletedAt: string | null;
 
     area: IOutageArea;
-    reports: IOutageReport[];
-    assignments: IOutageAssignment[];
+    // reports: IOutageReport[];
+    // assignments: IOutageAssignment[];
 }
 
 export interface IOutageMeta {

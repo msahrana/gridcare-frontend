@@ -14,6 +14,10 @@ export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
 export type AuthProvider = 'GOOGLE' | 'CREDENTIAL';
 
+export type OutagePriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+
+export type VerificationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
 export type OutageStatus =
     | 'REPORTED'
     | 'VERIFIED'
@@ -24,6 +28,13 @@ export type OutageStatus =
     | 'CANCELLED';
 
 export type AssignmentStatus =
+    | 'ASSIGNED'
+    | 'ACCEPTED'
+    | 'IN_PROGRESS'
+    | 'COMPLETED'
+    | 'CANCELLED';
+
+export type OutageAssignmentStatus =
     | 'ASSIGNED'
     | 'ACCEPTED'
     | 'IN_PROGRESS'

@@ -3,6 +3,7 @@ export * from './auth.hook';
 export * from './debounce.hook';
 export * from './feeder.hook';
 export * from './outage.hook';
+export * from './outageAssignment.hook';
 export * from './substation.hook';
 export * from './technician.hook';
 export * from './use-mobile';

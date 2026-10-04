@@ -37,11 +37,20 @@ export const adminRoutes = [
                 title: 'Outages',
                 url: `${prefix}/outages`,
             },
+
+            {
+                title: 'Outage Assignments',
+                url: `${prefix}/outageAssignments`,
+            },
         ],
     },
     {
         title: 'Finance & Reports',
         items: [
+            {
+                title: 'Outage Reports',
+                url: `${prefix}/outageReports`,
+            },
             {
                 title: 'Payments',
                 url: `${prefix}/payments`,
