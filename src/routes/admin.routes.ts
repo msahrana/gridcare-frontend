@@ -50,6 +50,18 @@ export const adminRoutes = [
                 title: 'Notifications',
                 url: `${prefix}/notifications`,
             },
+            {
+                title: 'Audit Logs',
+                url: `${prefix}/audit-logs`,
+            },
+            {
+                title: 'Restorations',
+                url: `${prefix}/restorations`,
+            },
+            {
+                title: 'Automated Schedules',
+                url: `${prefix}/automated-schedules`,
+            },
         ],
     },
     {

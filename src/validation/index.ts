@@ -1,4 +1,5 @@
 export * from './area.validation';
+export * from './audit-log.validation';
 export * from './auth.validation';
 export * from './feeder.validation';
 export * from './load-shedding-schedule.validation';

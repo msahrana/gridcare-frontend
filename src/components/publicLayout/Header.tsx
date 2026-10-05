@@ -11,8 +11,8 @@ import { LogOut } from 'lucide-react';
 
 const navItems = [
     { label: 'Home', href: '/' },
-    { label: 'Features', href: '#features' },
-    { label: 'Plans', href: '#plans' },
+    // { label: 'Features', href: '#features' },
+    { label: 'Plans', href: '/subscriptions/plans' },
     { label: 'About', href: '/about-us' },
     { label: 'Contact', href: '/contact-us' },
     { label: 'ApplyAsTechnician', href: '/applyAsTechnician' },

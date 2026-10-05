@@ -10,7 +10,7 @@ export const customerRoutes = [
             },
             {
                 title: 'My Subscriptions',
-                url: `${prefix}/my-subscriptions`,
+                url: `${prefix}/my-subscription`,
             },
         ],
     },
