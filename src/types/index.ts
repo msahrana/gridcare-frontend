@@ -18,6 +18,8 @@ export type OutagePriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
 export type VerificationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
+export type RestorationStatus = 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+
 export type OutageStatus =
     | 'REPORTED'
     | 'VERIFIED'

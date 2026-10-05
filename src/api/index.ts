@@ -9,6 +9,7 @@ export * from './notification.api';
 export * from './outage.api';
 export * from './outageAssignment.api';
 export * from './outageReport.api';
+export * from './restoration.api';
 export * from './subscriptionPayment.api';
 export * from './subscriptions-plan.api';
 export * from './substation.api';

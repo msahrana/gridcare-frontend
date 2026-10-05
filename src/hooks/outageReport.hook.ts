@@ -6,16 +6,17 @@ import {
 } from '@tanstack/react-query';
 
 import {
-    IOutageReportResponse,
-    IUpdateOutageReport,
-    OutageReportsParams,
-} from '@/interface';
-import {
     createOutageReport,
     deleteOutageReport,
     getAllOutageReports,
     updateOutageReport,
 } from '@/api';
+
+import {
+    IOutageReportResponse,
+    IUpdateOutageReport,
+    OutageReportsParams,
+} from '@/interface';
 
 export function useCreateOutageReport() {
     const queryClient = useQueryClient();

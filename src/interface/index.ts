@@ -9,6 +9,7 @@ export * from './notification.interface';
 export * from './outage.interface';
 export * from './outageAssignment.interface';
 export * from './outageReport.interface';
+export * from './restoration.interface';
 export * from './schedule.interface';
 export * from './sidebar.interface';
 export * from './subscription.interface';

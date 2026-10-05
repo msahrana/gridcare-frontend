@@ -10,6 +10,7 @@ export * from './notification.hook';
 export * from './outage.hook';
 export * from './outageAssignment.hook';
 export * from './outageReport.hook';
+export * from './restoration.hook';
 export * from './subscriptions-plan.hook';
 export * from './substation.hook';
 export * from './technician.hook';

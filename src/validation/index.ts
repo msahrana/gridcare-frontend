@@ -7,6 +7,7 @@ export * from './notification.validation';
 export * from './outage.validation';
 export * from './outageAssignment.valodation';
 export * from './outageReport.validation';
+export * from './restoration.validation';
 export * from './substation.validation';
 export * from './technician.validation';
 export * from './zone.validation';

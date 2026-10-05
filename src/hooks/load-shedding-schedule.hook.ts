@@ -40,7 +40,7 @@ export function useGetAllLoadSheddingSchedules(
     });
 }
 
-export function useSuspenseAllLoadSheddingSchedules(
+export function useSuspenseGetAllLoadSheddingSchedules(
     params: LoadSheddingScheduleParams,
 ) {
     return useSuspenseQuery<ILoadSheddingScheduleResponse>({

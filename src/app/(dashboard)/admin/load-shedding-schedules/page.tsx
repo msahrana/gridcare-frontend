@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useSuspenseAllLoadSheddingSchedules } from '@/hooks';
+import { useSuspenseGetAllLoadSheddingSchedules } from '@/hooks';
 import useDebounce from '@/hooks/debounce.hook';
 
 import SearchInput from '@/components/shared/SearchInput';
@@ -23,7 +23,7 @@ const LoadSheddingSchedules = () => {
         limit: 7,
     };
 
-    const { data } = useSuspenseAllLoadSheddingSchedules(params);
+    const { data } = useSuspenseGetAllLoadSheddingSchedules(params);
 
     console.log(data);
 

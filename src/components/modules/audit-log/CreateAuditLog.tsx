@@ -30,7 +30,7 @@ import {
 
 import {
     useCreateAuditLog,
-    useSuspenseAllLoadSheddingSchedules,
+    useSuspenseGetAllLoadSheddingSchedules,
     useSuspenseGetAllOutages,
     useSuspenseGetAllTechnicians,
     useSuspenseGetAllUsers,
@@ -60,10 +60,11 @@ const CreateAuditLog = () => {
         limit: 100,
     });
 
-    const { data: loadSheddingResponse } = useSuspenseAllLoadSheddingSchedules({
-        page: 1,
-        limit: 100,
-    });
+    const { data: loadSheddingResponse } =
+        useSuspenseGetAllLoadSheddingSchedules({
+            page: 1,
+            limit: 100,
+        });
 
     /*
      * Extract data
