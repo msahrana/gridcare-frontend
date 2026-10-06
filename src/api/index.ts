@@ -2,6 +2,7 @@ export * from './analytics.api';
 export * from './area.api';
 export * from './audit-log.api';
 export * from './auth.api';
+export * from './automated-schedule.api';
 export * from './feeder.api';
 export * from './load-shedding-schedule.api';
 export * from './my-subscription.api';

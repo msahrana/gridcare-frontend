@@ -3,6 +3,7 @@ export * from './api.interface';
 export * from './area.interface';
 export * from './audit-log.interface';
 export * from './auth.interface';
+export * from './automated-schedule.interface';
 export * from './feeder.interface';
 export * from './load-shedding-schedule.interface';
 export * from './notification.interface';

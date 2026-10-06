@@ -2,6 +2,7 @@ export * from './analytics.hook';
 export * from './area.hook';
 export * from './audit-log.hook';
 export * from './auth.hook';
+export * from './automated-schedule.hook';
 export * from './debounce.hook';
 export * from './feeder.hook';
 export * from './load-shedding-schedule.hook';
