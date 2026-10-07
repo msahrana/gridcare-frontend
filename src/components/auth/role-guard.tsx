@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useGetMe } from '@/hooks';
 import { UserRole } from '@/types';
 import AccessDenied from './access-denied';
@@ -14,6 +14,9 @@ interface IProps {
 
 const RoleGuard = ({ children, roles }: IProps) => {
     const router = useRouter();
+
+    const [mounted, setMounted] = useState(false);
+
     const { data, isPending, isError } = useGetMe();
 
     const user = data?.data;
@@ -21,13 +24,23 @@ const RoleGuard = ({ children, roles }: IProps) => {
     const isAuthorized = !!user && roles.includes(user.role);
 
     useEffect(() => {
-        if (isPending) {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted || isPending) {
             return;
         }
+
         if (isError || !user) {
             router.replace('/login');
         }
-    }, [isPending, isError, user, router]);
+    }, [mounted, isPending, isError, user, router]);
+
+    // Keep server and initial client render identical
+    if (!mounted) {
+        return <AuthLoading />;
+    }
 
     if (isPending) {
         return <AuthLoading />;
@@ -40,6 +53,7 @@ const RoleGuard = ({ children, roles }: IProps) => {
     if (isAuthorized) {
         return <>{children}</>;
     }
+
     return <AccessDenied />;
 };
 

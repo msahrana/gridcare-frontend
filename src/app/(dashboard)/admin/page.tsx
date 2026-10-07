@@ -11,65 +11,88 @@ import {
 
 import {
     AlertTriangle,
+    Building2,
     CheckCircle,
     Clock,
     GitBranch,
+    MapIcon,
     MapPin,
-    Building2,
     Users,
     Wrench,
     Zap,
-    MapIcon,
 } from 'lucide-react';
 
 const AdminDashboard = () => {
+    // =========================
+    // Analytics Overview
+    // =========================
+
     const { data: overviewResponse } = useAnalyticsOverview();
+
     const overview = overviewResponse?.data;
+
+    // =========================
+    // Dashboard Params
+    // =========================
+    // Dashboard-এ pagination দেখানো হচ্ছে না।
+    // তাই প্রথম page থেকে বড় সংখ্যক data fetch করছি।
 
     const params = {
         page: 1,
-        limit: 20,
+        limit: 1000,
     };
 
+    // =========================
     // Users
+    // =========================
+
     const { data: usersResponse } = useSuspenseGetAllUsers();
-    const users = usersResponse?.data ?? [];
 
+    const totalUsers = usersResponse?.data?.length ?? 0;
+
+    // =========================
     // Zones
+    // =========================
+
     const { data: zoneResponse } = useSuspenseGetAllZones(params);
-    const zone = zoneResponse?.data;
-    const totalZones = zone?.meta?.total ?? 0;
 
+    const zones = zoneResponse?.data;
+
+    const totalZones = zones?.meta?.total ?? 0;
+
+    // =========================
     // Substations
+    // =========================
+
     const { data: substationResponse } = useSuspenseGetAllSubstations(params);
-    const substations = substationResponse?.data ?? [];
-    const totalSubstations = substations.length;
 
+    const totalSubstations = substationResponse?.data?.length ?? 0;
+
+    // =========================
     // Feeders
+    // =========================
+
     const { data: feederResponse } = useSuspenseGetAllFeeders(params);
-    const feeder = feederResponse?.data;
-    const totalFeeders = feeder?.meta?.total ?? 0;
 
+    const feeders = feederResponse?.data;
+
+    const totalFeeders = feeders?.meta?.total ?? 0;
+
+    // =========================
     // Areas
-    const { data: areaResponse } = useSuspenseGetAllAreas(params);
-    const areas = areaResponse?.data ?? [];
-    const totalAreas = areas.length;
+    // =========================
 
-    // const analytics = {
-    //     totalOutages: 18,
-    //     activeOutages: 7,
-    //     restoredOutages: 1,
-    //     plannedOutages: 2,
-    //     unexpectedOutages: 6,
-    //     criticalOutages: 4,
-    //     totalRestorations: 2,
-    //     completedRestorations: 1,
-    // };
+    const { data: areaResponse } = useSuspenseGetAllAreas(params);
+
+    const totalAreas = areaResponse?.data?.length ?? 0;
+
+    // =========================
+    // Operational Summary Cards
+    // =========================
 
     const summaryCards = [
         {
             title: 'Total Outages',
-            // value: analytics.totalOutages,
             value: overview?.totalOutages ?? 0,
             icon: Zap,
         },
@@ -80,40 +103,44 @@ const AdminDashboard = () => {
         },
         {
             title: 'Restored Outages',
-            value: overview?.restoredOutages,
+            value: overview?.restoredOutages ?? 0,
             icon: CheckCircle,
         },
         {
             title: 'Critical Outages',
-            value: overview?.criticalOutages,
+            value: overview?.criticalOutages ?? 0,
             icon: AlertTriangle,
         },
         {
             title: 'Planned Outages',
-            value: overview?.plannedOutages,
+            value: overview?.plannedOutages ?? 0,
             icon: Clock,
         },
         {
             title: 'Unexpected Outages',
-            value: overview?.unexpectedOutages,
+            value: overview?.unexpectedOutages ?? 0,
             icon: Zap,
         },
         {
             title: 'Total Restorations',
-            value: overview?.totalRestorations,
+            value: overview?.totalRestorations ?? 0,
             icon: Wrench,
         },
         {
             title: 'Completed Restorations',
-            value: overview?.completedRestorations,
+            value: overview?.completedRestorations ?? 0,
             icon: CheckCircle,
         },
     ];
 
+    // =========================
+    // Infrastructure Summary Cards
+    // =========================
+
     const systemCards = [
         {
             title: 'Total Users',
-            value: users.length,
+            value: totalUsers,
             icon: Users,
         },
         {
@@ -140,7 +167,10 @@ const AdminDashboard = () => {
 
     return (
         <div className="ml-5 mt-6 space-y-8">
-            {/* Header */}
+            {/* =========================
+                Header
+            ========================= */}
+
             <div>
                 <h1 className="text-2xl font-bold tracking-tight">
                     Admin Dashboard
@@ -152,7 +182,10 @@ const AdminDashboard = () => {
                 </p>
             </div>
 
-            {/* Operational Summary */}
+            {/* =========================
+                Operational Summary
+            ========================= */}
+
             <section className="space-y-4">
                 <div>
                     <h2 className="text-lg font-semibold">
@@ -190,7 +223,10 @@ const AdminDashboard = () => {
                 </div>
             </section>
 
-            {/* Infrastructure Summary */}
+            {/* =========================
+                Infrastructure Summary
+            ========================= */}
+
             <section className="space-y-4">
                 <div>
                     <h2 className="text-lg font-semibold">
