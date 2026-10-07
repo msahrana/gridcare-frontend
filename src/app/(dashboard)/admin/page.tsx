@@ -1,3 +1,14 @@
+'use client';
+
+import {
+    useAnalyticsOverview,
+    useSuspenseGetAllAreas,
+    useSuspenseGetAllFeeders,
+    useSuspenseGetAllSubstations,
+    useSuspenseGetAllUsers,
+    useSuspenseGetAllZones,
+} from '@/hooks';
+
 import {
     AlertTriangle,
     CheckCircle,
@@ -12,57 +23,89 @@ import {
 } from 'lucide-react';
 
 const AdminDashboard = () => {
-    // Replace this with your analytics API data
-    const analytics = {
-        totalOutages: 8,
-        activeOutages: 7,
-        restoredOutages: 1,
-        plannedOutages: 2,
-        unexpectedOutages: 6,
-        criticalOutages: 4,
-        totalRestorations: 2,
-        completedRestorations: 1,
+    const { data: overviewResponse } = useAnalyticsOverview();
+    const overview = overviewResponse?.data;
+
+    const params = {
+        page: 1,
+        limit: 20,
     };
+
+    // Users
+    const { data: usersResponse } = useSuspenseGetAllUsers();
+    const users = usersResponse?.data ?? [];
+
+    // Zones
+    const { data: zoneResponse } = useSuspenseGetAllZones(params);
+    const zone = zoneResponse?.data;
+    const totalZones = zone?.meta?.total ?? 0;
+
+    // Substations
+    const { data: substationResponse } = useSuspenseGetAllSubstations(params);
+    const substations = substationResponse?.data ?? [];
+    const totalSubstations = substations.length;
+
+    // Feeders
+    const { data: feederResponse } = useSuspenseGetAllFeeders(params);
+    const feeder = feederResponse?.data;
+    const totalFeeders = feeder?.meta?.total ?? 0;
+
+    // Areas
+    const { data: areaResponse } = useSuspenseGetAllAreas(params);
+    const areas = areaResponse?.data ?? [];
+    const totalAreas = areas.length;
+
+    // const analytics = {
+    //     totalOutages: 18,
+    //     activeOutages: 7,
+    //     restoredOutages: 1,
+    //     plannedOutages: 2,
+    //     unexpectedOutages: 6,
+    //     criticalOutages: 4,
+    //     totalRestorations: 2,
+    //     completedRestorations: 1,
+    // };
 
     const summaryCards = [
         {
             title: 'Total Outages',
-            value: analytics.totalOutages,
+            // value: analytics.totalOutages,
+            value: overview?.totalOutages ?? 0,
             icon: Zap,
         },
         {
             title: 'Active Outages',
-            value: analytics.activeOutages,
+            value: overview?.activeOutages ?? 0,
             icon: AlertTriangle,
         },
         {
             title: 'Restored Outages',
-            value: analytics.restoredOutages,
+            value: overview?.restoredOutages,
             icon: CheckCircle,
         },
         {
             title: 'Critical Outages',
-            value: analytics.criticalOutages,
+            value: overview?.criticalOutages,
             icon: AlertTriangle,
         },
         {
             title: 'Planned Outages',
-            value: analytics.plannedOutages,
+            value: overview?.plannedOutages,
             icon: Clock,
         },
         {
             title: 'Unexpected Outages',
-            value: analytics.unexpectedOutages,
+            value: overview?.unexpectedOutages,
             icon: Zap,
         },
         {
             title: 'Total Restorations',
-            value: analytics.totalRestorations,
+            value: overview?.totalRestorations,
             icon: Wrench,
         },
         {
             title: 'Completed Restorations',
-            value: analytics.completedRestorations,
+            value: overview?.completedRestorations,
             icon: CheckCircle,
         },
     ];
@@ -70,33 +113,33 @@ const AdminDashboard = () => {
     const systemCards = [
         {
             title: 'Total Users',
-            value: 0,
+            value: users.length,
             icon: Users,
         },
         {
             title: 'Total Zones',
-            value: 0,
+            value: totalZones,
             icon: MapIcon,
         },
         {
             title: 'Total Substations',
-            value: 0,
+            value: totalSubstations,
             icon: Building2,
         },
         {
             title: 'Total Feeders',
-            value: 0,
+            value: totalFeeders,
             icon: GitBranch,
         },
         {
             title: 'Total Areas',
-            value: 0,
+            value: totalAreas,
             icon: MapPin,
         },
     ];
 
     return (
-        <div className="space-y-8 ml-5 mt-6">
+        <div className="ml-5 mt-6 space-y-8">
             {/* Header */}
             <div>
                 <h1 className="text-2xl font-bold tracking-tight">
