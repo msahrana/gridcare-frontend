@@ -13,6 +13,14 @@ export const customerRoutes = [
                 url: `${prefix}/my-subscription`,
             },
             {
+                title: 'History',
+                url: `${prefix}/history`,
+            },
+            {
+                title: 'All Outage Reports',
+                url: `${prefix}/getAllOutageReports`,
+            },
+            {
                 title: 'Upcoming Load Shedding',
                 url: `${prefix}/upcoming-load-shedding-schedules`,
             },
