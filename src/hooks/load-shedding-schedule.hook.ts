@@ -9,10 +9,12 @@ import {
     createLoadSheddingSchedule,
     deleteLoadSheddingSchedule,
     getAllLoadSheddingSchedules,
+    getUpcomingLoadSheddingSchedule,
     updateLoadSheddingSchedule,
 } from '@/api';
 import {
     ILoadSheddingScheduleResponse,
+    IUpcomingLoadSheddingScheduleResponse,
     IUpdateLoadSheddingSchedule,
     LoadSheddingScheduleParams,
 } from '@/interface';
@@ -75,5 +77,12 @@ export function useDeleteLoadSheddingSchedule() {
                 queryKey: ['load-shedding-schedules'],
             });
         },
+    });
+}
+
+export function useSuspenseGetUpcomingLoadSheddingSchedule() {
+    return useSuspenseQuery<IUpcomingLoadSheddingScheduleResponse>({
+        queryKey: ['load-shedding-schedules', 'upcoming'],
+        queryFn: getUpcomingLoadSheddingSchedule,
     });
 }

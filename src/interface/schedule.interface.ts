@@ -1,4 +1,4 @@
-export type ScheduleStatus = 'DRAFT' | 'PUBLISHED';
+import { ScheduleStatus } from '@/types';
 
 export interface Schedule {
     id: string;

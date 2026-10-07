@@ -1,4 +1,4 @@
-import { ScheduleStatus } from './schedule.interface';
+import { ScheduleStatus } from '@/types';
 
 export interface ICreateLoadSheddingSchedule {
     areaId: string;
@@ -88,4 +88,11 @@ export interface LoadSheddingScheduleParams {
     status?: ScheduleStatus;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
+}
+
+export interface IUpcomingLoadSheddingScheduleResponse {
+    success: boolean;
+    statusCode: number;
+    message: string;
+    data: ILoadSheddingSchedule[];
 }

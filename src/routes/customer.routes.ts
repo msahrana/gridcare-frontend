@@ -12,6 +12,10 @@ export const customerRoutes = [
                 title: 'My Subscriptions',
                 url: `${prefix}/my-subscription`,
             },
+            {
+                title: 'Upcoming Load Shedding',
+                url: `${prefix}/upcoming-load-shedding-schedules`,
+            },
         ],
     },
 

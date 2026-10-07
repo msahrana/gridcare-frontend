@@ -19,10 +19,10 @@ const ApplyAsTechnician = () => {
             <div className="relative hidden bg-muted lg:block">
                 <Image
                     src="/Technician-Photo.png"
-                    width={880}
-                    height={800}
-                    alt="SR Healthcare"
-                    className="absolute inset-0 h-full object-cover dark:brightness-[0.2] dark:grayscale"
+                    alt="GridCare"
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 0px"
+                    className="object-cover dark:brightness-[0.2] dark:grayscale"
                 />
             </div>
         </div>

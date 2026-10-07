@@ -49,3 +49,7 @@ export function deleteLoadSheddingSchedule(id: string) {
         },
     );
 }
+
+export function getUpcomingLoadSheddingSchedule() {
+    return apiClient('/load-shedding-schedules/upcoming');
+}

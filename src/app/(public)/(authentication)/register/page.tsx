@@ -16,13 +16,14 @@ const RegisterPage = () => {
                 </div>
             </div>
 
-            <div className="relative hidden bg-muted lg:block">
+            <div className="relative hidden min-h-[calc(100vh-72px)] overflow-hidden bg-white lg:block">
                 <Image
-                    src="/Res-Photo.png"
-                    width={880}
-                    height={800}
-                    alt="Image"
-                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                    src="/Register-Photo.png"
+                    width={1080}
+                    height={1080}
+                    alt="GridCare registration"
+                    priority
+                    className="absolute inset-0 min-h-full w-full object-contain"
                 />
             </div>
         </div>

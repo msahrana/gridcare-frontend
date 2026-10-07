@@ -76,10 +76,10 @@ const Hero = () => {
 
                         {/* Secondary CTA */}
                         <Link
-                            href="#features"
+                            href="/subscriptions/plans"
                             className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-7 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-200 hover:bg-orange-50 hover:text-[#ff8a00]"
                         >
-                            Explore Features
+                            Explore Plans
                         </Link>
                     </div>
 

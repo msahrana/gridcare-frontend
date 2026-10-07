@@ -14,15 +14,16 @@ const LoginPage = () => {
                         <LoginForm />
                     </div>
                 </div>
-            </div> 
+            </div>
 
-            <div className="relative hidden bg-muted lg:block">
+            <div className="relative h-full w-full">
                 <Image
                     src="/Login-Photo.png"
-                    width={880}
-                    height={800}
-                    alt="SR Healthcare"
-                    className="absolute inset-0 h-full  object-cover dark:brightness-[0.2] dark:grayscale"
+                    alt="GridCare Login"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
                 />
             </div>
         </div>
