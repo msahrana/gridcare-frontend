@@ -1,6 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
-import { createSubscriptionPayment, getAllSubscriptionPlans } from '@/api';
+import {
+    createSubscriptionPayment,
+    getAllSubscriptionPlans,
+    getMySubscriptionHistory,
+} from '@/api';
+import { SubscriptionHistoryParams } from '@/interface';
 
 export const useGetAllSubscriptionPlans = () => {
     return useQuery({
@@ -14,3 +19,12 @@ export const useCreateSubscriptionPayment = () => {
         mutationFn: createSubscriptionPayment,
     });
 };
+
+export function useSuspenseGetMySubscriptionHistory(
+    params?: SubscriptionHistoryParams,
+) {
+    return useSuspenseQuery({
+        queryKey: ['subscriptions-history', params],
+        queryFn: () => getMySubscriptionHistory(params),
+    });
+}
