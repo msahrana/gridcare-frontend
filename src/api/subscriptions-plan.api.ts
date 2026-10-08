@@ -13,15 +13,17 @@ export const getAllSubscriptionPlans =
         });
     };
 
-
-
-export function getMySubscriptionHistory(
-    params?: SubscriptionHistoryParams,
-) {
+export function getMySubscriptionHistory(params?: SubscriptionHistoryParams) {
     return apiClient<{ data: ISubscriptionHistory[] }>(
         '/subscriptions/history',
         {
             params,
         },
     );
+}
+
+export function cancelSubscription(subscriptionId: string) {
+    return apiClient(`/subscriptions/${subscriptionId}/cancel`, {
+        method: 'PATCH',
+    });
 }

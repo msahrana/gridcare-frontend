@@ -18,7 +18,7 @@ export const customerRoutes = [
             },
             {
                 title: 'All Outage Reports',
-                url: `${prefix}/getAllOutageReports`,
+                url: `${prefix}/get-all-outage-reports`,
             },
             {
                 title: 'Upcoming Load Shedding',

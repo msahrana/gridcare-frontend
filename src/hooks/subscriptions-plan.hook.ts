@@ -1,6 +1,12 @@
-import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+    useSuspenseQuery,
+} from '@tanstack/react-query';
 
 import {
+    cancelSubscription,
     createSubscriptionPayment,
     getAllSubscriptionPlans,
     getMySubscriptionHistory,
@@ -26,5 +32,19 @@ export function useSuspenseGetMySubscriptionHistory(
     return useSuspenseQuery({
         queryKey: ['subscriptions-history', params],
         queryFn: () => getMySubscriptionHistory(params),
+    });
+}
+
+export function useCancelSubscription() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (subscriptionId: string) =>
+            cancelSubscription(subscriptionId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['subscriptions-history'],
+            });
+            queryClient.invalidateQueries({ queryKey: ['my-subscription'] });
+        },
     });
 }
