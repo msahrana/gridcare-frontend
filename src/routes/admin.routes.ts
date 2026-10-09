@@ -14,6 +14,7 @@ export const adminRoutes = [
             },
         ],
     },
+
     {
         title: 'Schedule & Subscriptions',
         items: [
@@ -64,6 +65,7 @@ export const adminRoutes = [
             },
         ],
     },
+
     {
         title: 'Finance & Reports',
         items: [

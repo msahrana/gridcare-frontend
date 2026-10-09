@@ -5,42 +5,28 @@ export const technicianRoutes = [
         title: 'Overview',
         items: [
             {
-                title: 'Dashboard',
+                title: 'Technician Dashboard',
                 url: `${prefix}`,
             },
             {
-                title: 'My Schedule',
-                url: `${prefix}/schedules`,
+                title: 'Technician Assignments',
+                url: `${prefix}/outageAssignments`,
+            },
+            {
+                title: 'Outage Reports',
+                url: `${prefix}/outageReports`,
+            },
+            {
+                title: 'Restorations',
+                url: `${prefix}/restorations`,
+            },
+            {
+                title: 'Outages',
+                url: `${prefix}/outages`,
             },
         ],
     },
 
-    {
-        title: 'Patients',
-        items: [
-            {
-                title: 'My Patients',
-                url: `${prefix}/patients`,
-            },
-            {
-                title: 'Medical Records',
-                url: `${prefix}/medical-records`,
-            },
-        ],
-    },
-    {
-        title: 'Clinical',
-        items: [
-            {
-                title: 'Prescriptions',
-                url: `${prefix}/prescriptions`,
-            },
-            {
-                title: 'Consultations',
-                url: `${prefix}/consultations`,
-            },
-        ],
-    },
     {
         title: 'Account',
         items: [

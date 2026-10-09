@@ -1,17 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-
 import useDebounce from '@/hooks/debounce.hook';
 import { useSuspenseGetAllOutageAssignments } from '@/hooks';
-
 import SearchInput from '@/components/shared/SearchInput';
-
 import TablePagination from '@/components/ui/table-pagination';
-import CreateOutageAssignments from '@/components/modules/outageAssignment/CreateOutageAssignments';
-import GetOutageAssignments from '@/components/modules/outageAssignment/GetOutageAssignments';
+import GetTechnicianOutageAssignments from '@/components/modules/outageAssignment/GetTechnicianOutageAssignments';
 
-const OutageAssignments = () => {
+const TechnicianOutageAssignments = () => {
     const [searchInput, setSearchInput] = useState('');
     const [page, setPage] = useState(1);
 
@@ -46,12 +42,10 @@ const OutageAssignments = () => {
                         placeholder="Search by title, technician or assigned by..."
                     />
                 </div>
-
-                <CreateOutageAssignments />
             </div>
 
             {/* Assignment List */}
-            <GetOutageAssignments data={outageAssignments} />
+            <GetTechnicianOutageAssignments data={outageAssignments} />
 
             {/* Pagination */}
             {totalPages > 0 && (
@@ -67,4 +61,4 @@ const OutageAssignments = () => {
     );
 };
 
-export default OutageAssignments;
+export default TechnicianOutageAssignments;

@@ -84,7 +84,7 @@ export default function Footer() {
 
                     <Link
                         href="/customer/get-all-outage-reports"
-                        className="inline-flex w-fit items-center justify-center gap-2 rounded-lg bg-[#ff8a00] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#e67c00]"
+                        className="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-[#ff8a00] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#e67c00]"
                     >
                         <Zap className="size-4" />
                         Outage Report
