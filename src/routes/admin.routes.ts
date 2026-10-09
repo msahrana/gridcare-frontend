@@ -75,6 +75,10 @@ export const adminRoutes = [
                 title: 'Analytics',
                 url: `${prefix}/analytics`,
             },
+            {
+                title: 'Subscription Plans',
+                url: '/subscriptions/plans',
+            },
         ],
     },
 ];

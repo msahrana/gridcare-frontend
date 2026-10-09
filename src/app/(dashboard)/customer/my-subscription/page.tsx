@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useSuspenseGetMySubscription } from '@/hooks';
 
 const MySubscription = () => {
@@ -29,12 +30,13 @@ const MySubscription = () => {
                         a plan to access premium features.
                     </p>
 
-                    <button
-                        type="button"
-                        className="mt-5 rounded-md bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                    <Link
+                        type="submit"
+                        href="/subscriptions/plans"
+                        className="mt-5 rounded-full bg-[#ff8a00] px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
                     >
                         View Subscription Plans
-                    </button>
+                    </Link>
                 </div>
             </div>
         );

@@ -7,7 +7,6 @@ import {
 
 import {
     cancelSubscription,
-    createSubscriptionPayment,
     getAllSubscriptionPlans,
     getMySubscriptionHistory,
 } from '@/api';
@@ -17,12 +16,6 @@ export const useGetAllSubscriptionPlans = () => {
     return useQuery({
         queryKey: ['subscription-plans'],
         queryFn: getAllSubscriptionPlans,
-    });
-};
-
-export const useCreateSubscriptionPayment = () => {
-    return useMutation({
-        mutationFn: createSubscriptionPayment,
     });
 };
 
