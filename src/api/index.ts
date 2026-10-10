@@ -5,7 +5,6 @@ export * from './auth.api';
 export * from './automated-schedule.api';
 export * from './feeder.api';
 export * from './load-shedding-schedule.api';
-export * from './my-subscription.api';
 export * from './notification.api';
 export * from './outage.api';
 export * from './outageAssignment.api';

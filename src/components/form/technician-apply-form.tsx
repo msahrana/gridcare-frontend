@@ -59,9 +59,7 @@ const TechnicianApplyForm = () => {
     const defaultValues: TechnicianFormValues = {
         name: 'Mr Technician',
         email: 'technician@gmail.com',
-        password: 'PAssWord5288$@@',
         phone: '01912345678',
-        address: 'RTC, Rangpur',
         employeeId: 'TECH001',
         skills: 'Electrical maintenance, installation, troubleshooting',
         experienceYears: '3',
@@ -187,7 +185,7 @@ const TechnicianApplyForm = () => {
                                                 name={field.name}
                                                 type="text"
                                                 placeholder=" Mr. Rana"
-                                                value={field.state.value}
+                                                value={field.state.value ?? ''}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) =>
                                                     field.handleChange(
@@ -227,7 +225,7 @@ const TechnicianApplyForm = () => {
                                                 name={field.name}
                                                 type="email"
                                                 placeholder="technician@example.com"
-                                                value={field.state.value}
+                                                value={field.state.value ?? ''}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) =>
                                                     field.handleChange(
@@ -267,7 +265,7 @@ const TechnicianApplyForm = () => {
                                                 name={field.name}
                                                 type="tel"
                                                 placeholder="+880 1712 345678"
-                                                value={field.state.value}
+                                                value={field.state.value ?? ''}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) =>
                                                     field.handleChange(
@@ -277,49 +275,6 @@ const TechnicianApplyForm = () => {
                                                 aria-invalid={isInvalid}
                                                 className="pl-9"
                                                 autoComplete="tel"
-                                            />
-                                        </div>
-                                        {isInvalid && (
-                                            <FieldError
-                                                errors={field.state.meta.errors}
-                                            />
-                                        )}
-                                    </Field>
-                                );
-                            }}
-                        </form.Field>
-
-                        {/* Address */}
-                        <form.Field name="address">
-                            {(field) => {
-                                const isInvalid =
-                                    field.state.meta.isTouched &&
-                                    !field.state.meta.isValid;
-                                return (
-                                    <Field data-invalid={isInvalid}>
-                                        <FieldLabel htmlFor={field.name}>
-                                            Practice Address
-                                            <span className="font-normal text-muted-foreground">
-                                                (optional)
-                                            </span>
-                                        </FieldLabel>
-                                        <div className="relative">
-                                            <MapPin className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                                            <Input
-                                                id={field.name}
-                                                name={field.name}
-                                                type="text"
-                                                placeholder="Chamber or hospital address"
-                                                value={field.state.value}
-                                                onBlur={field.handleBlur}
-                                                onChange={(e) =>
-                                                    field.handleChange(
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                aria-invalid={isInvalid}
-                                                className="pl-9"
-                                                autoComplete="street-address"
                                             />
                                         </div>
                                         {isInvalid && (
@@ -353,7 +308,7 @@ const TechnicianApplyForm = () => {
                                                 max={70}
                                                 inputMode="numeric"
                                                 placeholder="10"
-                                                value={field.state.value}
+                                                value={field.state.value ?? ''}
                                                 onBlur={field.handleBlur}
                                                 onChange={(e) =>
                                                     field.handleChange(
@@ -394,22 +349,14 @@ const TechnicianApplyForm = () => {
                                         name={field.name}
                                         rows={4}
                                         placeholder="Share your background, areas of interest and patient care philosophy..."
-                                        value={field.state.value}
+                                        value={field.state.value ?? ''}
                                         onBlur={field.handleBlur}
                                         onChange={(e) =>
                                             field.handleChange(e.target.value)
                                         }
                                         aria-invalid={isInvalid}
                                     />
-                                    <div className="flex items-center justify-between gap-2">
-                                        <FieldDescription>
-                                            Shown on your public profile after
-                                            approval.
-                                        </FieldDescription>
-                                        <span className="text-xs text-muted-foreground">
-                                            {field.state.value.length}/1000
-                                        </span>
-                                    </div>
+
                                     {isInvalid && (
                                         <FieldError
                                             errors={field.state.meta.errors}
@@ -525,7 +472,7 @@ const TechnicianApplyForm = () => {
                             const isInvalid =
                                 field.state.meta.isTouched &&
                                 !field.state.meta.isValid;
-                            const files = field.state.value;
+                            const files = field.state.value ?? [];
                             return (
                                 <Field data-invalid={isInvalid}>
                                     <FieldLabel htmlFor="additional-file-field">
