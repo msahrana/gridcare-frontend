@@ -1,13 +1,16 @@
 'use client';
 
 import { useForm } from '@tanstack/react-form';
+import { useQueryClient } from '@tanstack/react-query';
 import { Eye, EyeClosed } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import z from 'zod';
+
 import { useLogin } from '@/hooks';
 import { loginSchema } from '@/validation';
+
 import { Button } from '../ui/button';
 import {
     Field,
@@ -24,6 +27,8 @@ import GoogleLoginComponent from '../modules/google-login/GoogleLogin';
 
 const LoginForm = () => {
     const router = useRouter();
+    const queryClient = useQueryClient();
+
     const [showPassword, setShowPassword] = useState(false);
 
     const { mutate: login, isPending: loginPending } = useLogin();
@@ -31,20 +36,8 @@ const LoginForm = () => {
     type UserDefaultValues = z.infer<typeof loginSchema>;
 
     const defaultValues: UserDefaultValues = {
-        // email: 'msahrana@gmail.com',    //customer
-        // password: 'SAYed#@5288%$@',
-
-        email: 'sayedrana@srhealthcare.com', //admin
+        email: 'sayedrana@srhealthcare.com',
         password: '$2b$12$sAyEd[Rana]5288',
-
-        // email: 'tara.mony@srhealthcare.com', //operator
-        // password: '$2b$12$TaraMonymost7860',
-
-        // email: 'testertechnician@gmail.com', //technician
-        // password: 'Tester@technician12345',
-
-        // email: 'drsiyana3@gmail.com', //technician
-        // password: '5*MCj*Fgj5',
     };
 
     const form = useForm({
@@ -61,22 +54,42 @@ const LoginForm = () => {
             };
 
             login(loginData, {
-                onSuccess: (res) => {
-                    console.log('LOGIN SUCCESS:', res);
-                    toast.add({
-                        title: 'Login Successfully!',
-                        description: res.message || 'Welcome Back to Homepage',
-                        type: 'success',
-                    });
+                onSuccess: async (res) => {
+                    try {
+                        // Refresh authenticated user data
+                        await queryClient.invalidateQueries({
+                            queryKey: ['user'],
+                        });
 
-                    router.push('/');
+                        // Fetch updated user data immediately
+                        await queryClient.refetchQueries({
+                            queryKey: ['user'],
+                            type: 'active',
+                        });
+
+                        toast.add({
+                            title: 'Login Successful!',
+                            description: res.message || 'Welcome back!',
+                            type: 'success',
+                        });
+
+                        // Navigate to homepage
+                        router.replace('/');
+                        router.refresh();
+                    } catch (error) {
+                        console.error('Failed to refresh user data:', error);
+
+                        // Login succeeded; still navigate
+                        router.replace('/');
+                        router.refresh();
+                    }
                 },
 
                 onError: (err) => {
                     toast.add({
                         title: 'Authorization Failure',
                         description:
-                            err.message || 'Something went wrong. Try again...',
+                            err.message || 'Something went wrong. Try again.',
                         type: 'error',
                     });
                 },
@@ -86,7 +99,6 @@ const LoginForm = () => {
 
     return (
         <div className="flex flex-col gap-5">
-            {/* Header */}
             <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold tracking-tight">
                     Login to your account
@@ -97,7 +109,6 @@ const LoginForm = () => {
                 </p>
             </div>
 
-            {/* Login Form */}
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -105,7 +116,6 @@ const LoginForm = () => {
                 }}
             >
                 <FieldGroup>
-                    {/* Email */}
                     <form.Field name="email">
                         {(field) => {
                             const isInvalid =
@@ -123,11 +133,11 @@ const LoginForm = () => {
                                         name={field.name}
                                         type="email"
                                         placeholder="Enter your email"
+                                        value={field.state.value}
                                         onChange={(e) =>
                                             field.handleChange(e.target.value)
                                         }
                                         onBlur={field.handleBlur}
-                                        value={field.state.value}
                                         autoComplete="email"
                                         aria-invalid={isInvalid}
                                     />
@@ -142,7 +152,6 @@ const LoginForm = () => {
                         }}
                     </form.Field>
 
-                    {/* Password */}
                     <form.Field name="password">
                         {(field) => {
                             const isInvalid =
@@ -165,13 +174,13 @@ const LoginForm = () => {
                                                     : 'password'
                                             }
                                             placeholder="Enter your password"
+                                            value={field.state.value}
                                             onChange={(e) =>
                                                 field.handleChange(
                                                     e.target.value,
                                                 )
                                             }
                                             onBlur={field.handleBlur}
-                                            value={field.state.value}
                                             autoComplete="current-password"
                                             aria-invalid={isInvalid}
                                             className="pr-10"
@@ -207,7 +216,6 @@ const LoginForm = () => {
                         }}
                     </form.Field>
 
-                    {/* Forgot Password */}
                     <div className="flex justify-end">
                         <Link
                             href="/forgot-password"
@@ -217,7 +225,6 @@ const LoginForm = () => {
                         </Link>
                     </div>
 
-                    {/* Submit */}
                     <Button
                         disabled={loginPending}
                         type="submit"
@@ -226,28 +233,25 @@ const LoginForm = () => {
                         {loginPending ? (
                             <>
                                 <Spinner />
-                                Submitting
+                                Submitting...
                             </>
                         ) : (
                             'Submit'
                         )}
                     </Button>
 
-                    {/* Social Login Separator */}
                     <FieldSeparator>Or continue with</FieldSeparator>
 
-                    {/* Social Login */}
                     <Field>
                         <div className="flex flex-col gap-2">
                             <GoogleLoginComponent />
                         </div>
 
-                        {/* Sign Up */}
                         <FieldDescription className="text-center">
                             Don&apos;t have an account?{' '}
                             <Link
                                 href="/register"
-                                className="underline underline-offset-4 text-[#ff8a00] font-semibold"
+                                className="font-semibold text-[#ff8a00] underline underline-offset-4"
                             >
                                 Sign Up
                             </Link>

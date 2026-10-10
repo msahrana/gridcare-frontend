@@ -1,6 +1,7 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Logo from '../logo/Logo';
 import { Button } from '../ui/button';
@@ -11,8 +12,6 @@ import { LogOut } from 'lucide-react';
 
 const navItems = [
     { label: 'Home', href: '/' },
-    // { label: 'Features', href: '#features' },
-    // { label: 'Plans', href: '/subscriptions/plans' },
     { label: 'About', href: '/about-us' },
     { label: 'Contact', href: '/contact-us' },
     { label: 'ApplyAsTechnician', href: '/applyAsTechnician' },
@@ -26,28 +25,35 @@ const dashboardRoute: Record<UserRole, string> = {
 };
 
 export default function Header() {
-    const { data, isLoading } = useGetMe();
-    const { mutate: logout } = useLogout();
+    const router = useRouter();
     const queryClient = useQueryClient();
 
-    const role: UserRole = !!data?.data && data?.data.role;
+    const { data, isLoading } = useGetMe();
+    const { mutate: logout, isPending } = useLogout();
+
+    const role = data?.data?.role as UserRole | undefined;
 
     const handleLogout = () => {
         logout(undefined, {
-            onSuccess: () => {
+            onSuccess: async () => {
+                // Clear cached user data
+                queryClient.clear();
+
                 toast.add({
-                    title: 'Tata',
+                    title: 'Logged out',
                     description: 'Logged out successfully',
                     type: 'success',
                 });
 
-                queryClient.removeQueries({ queryKey: ['user'] });
+                // Redirect to home page
+                router.replace('/');
+                router.refresh();
             },
 
             onError: () => {
                 toast.add({
                     title: 'Logout failed',
-                    description: 'Something Went Wrong',
+                    description: 'Something went wrong. Please try again.',
                     type: 'error',
                 });
             },
@@ -58,14 +64,16 @@ export default function Header() {
         <header className="w-full h-20 border-b">
             <div className="flex justify-between items-center h-full max-w-7xl mx-auto">
                 <div>
-                    {/* Logo */}
                     <Logo />
                 </div>
 
-                {/* Desktop Navigation */}
-                <nav className="flex gap-5 ">
+                <nav className="flex gap-5">
                     {navItems.map((item) => (
-                        <Link key={item.label} href={item.href}>
+                        <Link
+                            key={item.label}
+                            href={item.href}
+                            className="hover:text-[#ff8a00] transition-colors"
+                        >
                             {item.label}
                         </Link>
                     ))}
@@ -73,7 +81,7 @@ export default function Header() {
                     {role && (
                         <Link
                             href={dashboardRoute[role]}
-                            className="hover:text-[#ff8a00]"
+                            className="hover:text-[#ff8a00] transition-colors"
                         >
                             Dashboard
                         </Link>
@@ -83,17 +91,22 @@ export default function Header() {
                 <div>
                     {!isLoading && !data && (
                         <Button
-                            render={<Link href="/login">Login</Link>}
+                            render={<Link href="/login" />}
                             nativeButton={false}
                             className="px-6"
                         >
                             Login
                         </Button>
                     )}
+
                     {!isLoading && data && (
-                        <Button onClick={handleLogout} className="px-5">
+                        <Button
+                            onClick={handleLogout}
+                            disabled={isPending}
+                            className="px-5"
+                        >
                             <LogOut className="text-[#0055B8]" />
-                            Logout
+                            {isPending ? 'Logging out...' : 'Logout'}
                         </Button>
                     )}
                 </div>

@@ -1,6 +1,12 @@
 'use client';
 
-import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+    useSuspenseQuery,
+} from '@tanstack/react-query';
+
 import {
     getAllUsers,
     getMe,
@@ -10,7 +16,6 @@ import {
     userRegistration,
     verifyAccount,
 } from '@/api';
-
 
 export function useRegister() {
     return useMutation({
@@ -25,8 +30,16 @@ export function useVerifyAccount() {
 }
 
 export function useLogin() {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: userLogin,
+
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['user'],
+            });
+        },
     });
 }
 
