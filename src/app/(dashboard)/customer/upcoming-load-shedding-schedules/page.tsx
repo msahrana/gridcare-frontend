@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 import {
     useGetMySubscription,
-    useSuspenseGetUpcomingLoadSheddingSchedule,
+    useGetUpcomingLoadSheddingSchedule,
 } from '@/hooks';
 import { IMySubscriptionPaymentItem } from '@/interface';
 
@@ -45,6 +45,14 @@ const UpcomingLoadSheddingSchedules = () => {
         startTime <= now &&
         endTime > now &&
         hasPaidPayment;
+
+    if (isSubscriptionPending || isRefetching) {
+        return (
+            <div className="flex min-h-40 items-center justify-center">
+                <p>Loading your subscription...</p>
+            </div>
+        );
+    }
 
     // Subscription loading state
     if (isSubscriptionPending) {
@@ -127,7 +135,7 @@ const UpcomingLoadSheddingSchedules = () => {
 };
 
 const PaidCustomerSchedules = () => {
-    const { data } = useSuspenseGetUpcomingLoadSheddingSchedule();
+    const { data } = useGetUpcomingLoadSheddingSchedule();
 
     const schedules = data?.data ?? [];
 

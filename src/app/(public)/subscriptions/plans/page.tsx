@@ -9,13 +9,9 @@ import {
     useCreateSubscriptionPayment,
     useGetAllSubscriptionPlans,
 } from '@/hooks';
-// import { IMySubscriptionPayment } from '@/interface';
 
 const SubscriptionPlans = () => {
     const { data, isLoading, isError } = useGetAllSubscriptionPlans();
-
-    // const { data: paymentsData, isLoading: isPaymentsLoading } =
-    //     useGetMySubscriptionPayments();
 
     const {
         mutateAsync: createSubscription,
@@ -30,19 +26,6 @@ const SubscriptionPlans = () => {
     );
 
     const plans = data?.data ?? [];
-
-    // Adjust this path if your API response uses a different structure.
-    //     const payments = paymentsData?.data ?? [];
-
-    //     // Check whether a plan already has a successfully paid payment.
-    //     const isPlanPaid = (planId: string): boolean => {
-    //     return payments.some(
-    //         (payment: IMySubscriptionPayment) =>
-    //             payment.subscription?.planId === planId &&
-    //             payment.status === 'PAID' &&
-    //             Boolean(payment.bkashTrxId),
-    //     );
-    // };
 
     const handlePayment = async (planId: string) => {
         try {
@@ -247,13 +230,6 @@ const SubscriptionPlans = () => {
                                     'Pay with bKash'
                                 )}
                             </Button>
-
-                            {/* Already-paid message */}
-                            {/* {isPaid && (
-                                <p className="mt-3 text-center text-sm font-medium text-green-600">
-                                    Payment already completed for this plan.
-                                </p>
-                            )} */}
 
                             {!isActive && (
                                 <p className="mt-2 text-center text-xs text-muted-foreground">

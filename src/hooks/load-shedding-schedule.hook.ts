@@ -80,9 +80,12 @@ export function useDeleteLoadSheddingSchedule() {
     });
 }
 
-export function useSuspenseGetUpcomingLoadSheddingSchedule() {
-    return useSuspenseQuery<IUpcomingLoadSheddingScheduleResponse>({
+export function useGetUpcomingLoadSheddingSchedule() {
+    return useQuery<IUpcomingLoadSheddingScheduleResponse>({
         queryKey: ['load-shedding-schedules', 'upcoming'],
         queryFn: getUpcomingLoadSheddingSchedule,
+        staleTime: 30 * 1000,
+        retry: 1,
+        refetchOnWindowFocus: false,
     });
 }

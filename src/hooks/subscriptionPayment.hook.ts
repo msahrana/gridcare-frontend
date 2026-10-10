@@ -30,4 +30,7 @@ export const useGetMySubscription = () =>
     useQuery({
         queryKey: ['subscription', 'my'],
         queryFn: getMySubscription,
+        staleTime: 60 * 1000, // ১ মিনিট cache
+        refetchOnMount: true,
+        refetchOnWindowFocus: false,
     });
