@@ -1,7 +1,5 @@
 'use client';
 
-
-
 import { IOutageReport } from '@/interface';
 
 interface GetAllOutageReportsProps {
@@ -9,8 +7,6 @@ interface GetAllOutageReportsProps {
 }
 
 const GetCustometOutageReport = ({ data }: GetAllOutageReportsProps) => {
-    
-
     return (
         <>
             {/* Outage Report Table */}

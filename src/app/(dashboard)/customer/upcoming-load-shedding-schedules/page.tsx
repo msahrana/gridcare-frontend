@@ -11,6 +11,7 @@ import {
     useGetUpcomingLoadSheddingSchedule,
 } from '@/hooks';
 import { IMySubscriptionPaymentItem } from '@/interface';
+import GlobalLoading from '@/app/loading';
 
 const UpcomingLoadSheddingSchedules = () => {
     const {
@@ -47,11 +48,7 @@ const UpcomingLoadSheddingSchedules = () => {
         hasPaidPayment;
 
     if (isSubscriptionPending || isRefetching) {
-        return (
-            <div className="flex min-h-40 items-center justify-center">
-                <p>Loading your subscription...</p>
-            </div>
-        );
+        return <GlobalLoading />;
     }
 
     // Subscription loading state
@@ -135,7 +132,12 @@ const UpcomingLoadSheddingSchedules = () => {
 };
 
 const PaidCustomerSchedules = () => {
-    const { data } = useGetUpcomingLoadSheddingSchedule();
+    const { data, isPending, isFetching } =
+        useGetUpcomingLoadSheddingSchedule();
+
+    if (isPending || (!data && isFetching)) {
+        return <GlobalLoading />;
+    }
 
     const schedules = data?.data ?? [];
 
